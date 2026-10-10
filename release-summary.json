@@ -1,29 +1,17 @@
 {
-  "version": "1.102.0",
+  "version": "1.105.0",
   "changes": {
     "en-US": [
-      "Read and share notes more comfortably on Android and iOS, with improved tablet layout, note actions, and Mermaid diagrams.",
-      "Share note images in a wider Aurora layout, and improve Android image export, saving, and preview reliability.",
-      "Preview DOCX attachments on demand, show upload placeholders for attachments, and fix large file uploads on Android.",
-      "Configure a desktop-wide shortcut to show or hide EdgeEver, and improve installation of larger Antigravity AI adapters.",
-      "Refine dark mode and notebook selection, show member account dates, preserve new notebook selection after sync, and improve AI math display.",
-      "Expand the API and plugin development guides and add a Polish project overview."
+      "AI agents can preview and delete empty notebook trees through MCP, with protection for notebooks containing active notes, the inbox, and concurrent changes (#509).",
+      "Improve the desktop AI agent selector with cached and preloaded connection status, status dots, clearer menus, and reliable agent settings across layouts."
     ],
     "zh-CN": [
-      "改进 Android 与 iOS 的笔记阅读和分享：优化平板布局、笔记操作与 Mermaid 图表显示。",
-      "笔记图片分享默认使用更宽的 Aurora 样式，并提高 Android 图片导出、保存和预览的可靠性。",
-      "支持按需预览 DOCX 附件、在上传时显示附件占位，并修复 Android 大文件上传。",
-      "桌面端可设置全局快捷键以显示或隐藏 EdgeEver，并改进较大 Antigravity AI 适配器的安装。",
-      "调整深色模式和笔记本选中状态，显示成员账户时间；修复新建笔记本同步后的选中状态，并改善 AI 数学公式显示。",
-      "补充 API 与插件开发指南，并新增波兰语项目介绍。"
+      "AI Agent 可通过 MCP 预览并删除空笔记本树，同时保护含有效笔记的目录、等待分类及并发变更（#509）。",
+      "改进桌面 AI Agent 选择器：缓存并预加载连接状态，显示状态圆点，简化菜单，并修复不同布局下的 Agent 设置和连接判断。"
     ],
     "ja": [
-      "Android と iOS のノート閲覧・共有を改善し、タブレットのレイアウト、ノート操作、Mermaid 図の表示を調整しました。",
-      "ノート画像の共有で幅広の Aurora デザインを標準にし、Android での画像の書き出し、保存、プレビューを改善しました。",
-      "DOCX 添付ファイルのオンデマンドプレビューとアップロード中の表示を追加し、Android の大きなファイルのアップロードを修正しました。",
-      "デスクトップ版で EdgeEver の表示・非表示を切り替えるグローバルショートカットを設定できるようにし、大きな Antigravity AI アダプターのインストールを改善しました。",
-      "ダークモードとノートブックの選択表示を調整し、メンバーのアカウント日時を表示します。新規ノートブックの同期後の選択状態と AI の数式表示も改善しました。",
-      "API とプラグイン開発ガイドを拡充し、ポーランド語のプロジェクト概要を追加しました。"
+      "MCP で空のノートブック階層をプレビューして削除できるようになりました。ノートを含む階層、受信トレイ、同時変更は保護されます（#509）。",
+      "デスクトップの AI エージェント選択で接続状態をキャッシュして事前に読み込み、状態表示とメニューを改善しました。レイアウト間の設定と接続判定も修正しました。"
     ]
   }
 }

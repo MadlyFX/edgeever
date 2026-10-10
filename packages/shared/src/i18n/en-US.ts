@@ -1487,6 +1487,15 @@ export const enUS = {
       imageSaveFailed: "The image could not be saved locally. Download it now; it may be lost when you close this page.",
     },
     agentSource: {
+      configure: "Configure models and agents",
+      switchNoteAgentHint: "The selected agent will handle subsequent edits to this infographic.",
+      optionUnavailable: "Unavailable",
+
+      switch: "Switch AI",
+      newAgentThread: "Switching to another agent starts a new chat. Previous chats remain in history.",
+      noModels: "Configure AI models in Settings.",
+      switchUnavailable: "Agent unavailable. Check its connection in Settings.",
+
       title: "Agent mode",
       description: "Use the built-in Agent, or connect to an Agent (ACP) running on this machine.",
       localDisabled: "Requires the desktop app.",
@@ -1547,6 +1556,7 @@ export const enUS = {
       notProbed: "Not checked yet",
       invalidPath: "Enter an absolute path to an executable file.",
       states: {
+        not_probed: "Not checked yet",
         not_installed: "ACP connector not found",
         installing: "Installing the ACP connector automatically…",
         needs_login: "Needs login",
@@ -2289,6 +2299,17 @@ export const enUS = {
     expandOutlineHeading: "Expand {{name}}",
   },
   sharing: {
+    managementTitle: "Share management",
+    managementDescription: "See notes currently accessible through public links and manage each share.",
+    managementLoading: "Loading shared notes",
+    managementLoadFailed: "Could not load the latest shares. Check your connection and try again.",
+    managementEmpty: "No notes are currently shared.",
+    viewAll: "View all shares",
+    retry: "Retry",
+    loadMore: "Load more",
+    sharedOn: "Shared {{date}}",
+    passwordProtected: "Password protected",
+    unknownNotebook: "Unknown notebook",
     action: "Share note",
     afterSync: "Share note after sync",
     active: "Shared",
