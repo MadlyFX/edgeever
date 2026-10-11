@@ -1,17 +1,20 @@
 {
-  "version": "1.105.0",
+  "version": "1.108.0",
   "changes": {
     "en-US": [
-      "AI agents can preview and delete empty notebook trees through MCP, with protection for notebooks containing active notes, the inbox, and concurrent changes (#509).",
-      "Improve the desktop AI agent selector with cached and preloaded connection status, status dots, clearer menus, and reliable agent settings across layouts."
+      "Create editable poster notes with templates, bundled fonts, canvas tools, image export, and AI edits through the shared assistant. Edit posters on Web or desktop; Android and iOS display their preview and text. Saving artwork versions adds preview attachments. Update the server to protect poster content from older clients.",
+      "See desktop update download progress and more detailed update diagnostics in system information, including Windows taskbar shortcut details.",
+      "Recover WorkBuddy agent login after cancellation without leaving authentication stuck, with clearer login errors and more compact assistant alerts."
     ],
     "zh-CN": [
-      "AI Agent 可通过 MCP 预览并删除空笔记本树，同时保护含有效笔记的目录、等待分类及并发变更（#509）。",
-      "改进桌面 AI Agent 选择器：缓存并预加载连接状态，显示状态圆点，简化菜单，并修复不同布局下的 Agent 设置和连接判断。"
+      "新增可编辑的海报笔记，支持模板、内置字体、画布工具、图片导出和统一助手 AI 编辑。Web 和桌面端支持编辑，Android 与 iOS 显示预览和文本。保存画布版本会增加预览附件；请同步升级服务端，以保护海报内容免受旧客户端覆盖。",
+      "桌面端新增更新下载进度显示，系统信息提供更详细的更新诊断及 Windows 任务栏快捷方式信息。",
+      "修复取消 WorkBuddy Agent 登录后认证卡住的问题，并简化登录错误提示与助手侧栏提醒。"
     ],
     "ja": [
-      "MCP で空のノートブック階層をプレビューして削除できるようになりました。ノートを含む階層、受信トレイ、同時変更は保護されます（#509）。",
-      "デスクトップの AI エージェント選択で接続状態をキャッシュして事前に読み込み、状態表示とメニューを改善しました。レイアウト間の設定と接続判定も修正しました。"
+      "編集可能なポスターノートを追加しました。テンプレート、内蔵フォント、キャンバスツール、画像書き出し、共通アシスタントによるAI編集に対応します。Webとデスクトップで編集でき、AndroidとiOSではプレビューとテキストを表示します。保存した作品の各バージョンにはプレビュー添付が追加されます。旧クライアントによる上書きを防ぐため、サーバーも更新してください。",
+      "デスクトップ更新のダウンロード進捗を表示します。システム情報には詳細な更新診断とWindowsタスクバーのショートカット情報が追加されます。",
+      "WorkBuddyエージェントのログインをキャンセルした後、認証が停止したままになる問題を修正しました。ログインエラーを分かりやすくし、アシスタントの通知をコンパクトにしました。"
     ]
   }
 }

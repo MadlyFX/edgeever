@@ -130,8 +130,8 @@ interface EdgeEverDesktopBridge {
     managed?: boolean;
     authMethods?: Array<{ id: string; name: string }>;
   }>;
-  installAcpAdapter?(id: "codex" | "antigravity" | "piAgent"): Promise<{ updated: boolean; version?: string; adapter?: {
-    id: "codex" | "antigravity" | "piAgent";
+  installAcpAdapter?(id: "codex" | "claudeCode" | "antigravity" | "piAgent"): Promise<{ updated: boolean; version?: string; adapter?: {
+    id: "codex" | "claudeCode" | "antigravity" | "piAgent";
     label: string;
     state: "not_installed" | "needs_login" | "available" | "failed";
     detail?: string;
@@ -176,9 +176,29 @@ interface EdgeEverDesktopBridge {
   }) => void): () => void;
 }
 
+interface DesktopUpdateDiagnostic {
+  at: string;
+  stage: string;
+  version: string;
+  platform: string;
+  arch: string;
+  code: string | null;
+  message: string;
+  source: string;
+}
+
+interface DesktopUpdateDownloadProgress {
+  percent: number | null;
+  transferred: number | null;
+  total: number | null;
+  bytesPerSecond: number | null;
+}
+
 interface DesktopUpdateStatus {
   state: "idle" | "available" | "downloaded";
   version: string | null;
+  error?: DesktopUpdateDiagnostic | null;
+  progress?: DesktopUpdateDownloadProgress | null;
 }
 
 type DesktopLocalDataResetErrorCode =
