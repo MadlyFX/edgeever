@@ -1,20 +1,23 @@
 {
-  "version": "1.108.0",
+  "version": "1.111.0",
   "changes": {
     "en-US": [
-      "Create editable poster notes with templates, bundled fonts, canvas tools, image export, and AI edits through the shared assistant. Edit posters on Web or desktop; Android and iOS display their preview and text. Saving artwork versions adds preview attachments. Update the server to protect poster content from older clients.",
-      "See desktop update download progress and more detailed update diagnostics in system information, including Windows taskbar shortcut details.",
-      "Recover WorkBuddy agent login after cancellation without leaving authentication stuck, with clearer login errors and more compact assistant alerts."
+      "Open the AI model picker with a single click when adding a model.",
+      "Clarify WorkBuddy connection and sign-in status in AI settings.",
+      "Let the built-in AI companion delete empty notebooks while protecting the inbox and notebooks containing notes.",
+      "Expand Web Clipper support for Facebook, Instagram, LinkedIn, Threads, Bluesky, Hacker News, V2EX, Xiaoyuzhou, Substack and Medium. Extension store availability follows store review."
     ],
     "zh-CN": [
-      "新增可编辑的海报笔记，支持模板、内置字体、画布工具、图片导出和统一助手 AI 编辑。Web 和桌面端支持编辑，Android 与 iOS 显示预览和文本。保存画布版本会增加预览附件；请同步升级服务端，以保护海报内容免受旧客户端覆盖。",
-      "桌面端新增更新下载进度显示，系统信息提供更详细的更新诊断及 Windows 任务栏快捷方式信息。",
-      "修复取消 WorkBuddy Agent 登录后认证卡住的问题，并简化登录错误提示与助手侧栏提醒。"
+      "添加模型时，单击即可展开 AI 模型选择列表。",
+      "明确 AI 设置中 WorkBuddy 的连接状态与登录状态。",
+      "内置 AI 助手可以删除空笔记本，同时保护收件箱及包含笔记的笔记本。",
+      "网页剪藏扩展增强 Facebook、Instagram、LinkedIn、Threads、Bluesky、Hacker News、V2EX、小宇宙、Substack 和 Medium 的内容提取；扩展商店上架以商店审核结果为准。"
     ],
     "ja": [
-      "編集可能なポスターノートを追加しました。テンプレート、内蔵フォント、キャンバスツール、画像書き出し、共通アシスタントによるAI編集に対応します。Webとデスクトップで編集でき、AndroidとiOSではプレビューとテキストを表示します。保存した作品の各バージョンにはプレビュー添付が追加されます。旧クライアントによる上書きを防ぐため、サーバーも更新してください。",
-      "デスクトップ更新のダウンロード進捗を表示します。システム情報には詳細な更新診断とWindowsタスクバーのショートカット情報が追加されます。",
-      "WorkBuddyエージェントのログインをキャンセルした後、認証が停止したままになる問題を修正しました。ログインエラーを分かりやすくし、アシスタントの通知をコンパクトにしました。"
+      "モデルを追加する際、シングルクリックで AI モデルの選択リストを開けるようになりました。",
+      "AI 設定で WorkBuddy の接続状態とログイン状態をより分かりやすく表示します。",
+      "内蔵 AI アシスタントで空のノートブックを削除できるようになりました。受信箱とノートを含むノートブックは保護されます。",
+      "Web Clipper の Facebook、Instagram、LinkedIn、Threads、Bluesky、Hacker News、V2EX、小宇宙、Substack、Medium への対応を拡充しました。拡張機能ストアでの公開はストア審査後となります。"
     ]
   }
 }
