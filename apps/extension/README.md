@@ -27,6 +27,10 @@ The extension does not use a central relay service. The page content is sent dir
 
 HN usage and verification limits are documented in [English](../../docs/browser-clipper-hacker-news.md) and [简体中文](../../docs/browser-clipper-hacker-news.zh-CN.md).
 
+## UI architecture
+
+Extension pages use React, shared shadcn/ui-style Button and Input components, and Tailwind CSS 4 with a neutral theme. The webpage feedback UI uses the official shadcn/ui Sonner component structure, adapted for an explicit extension theme, inside a Shadow DOM. Extension pages and notifications share theme tokens. The feedback entry only mounts the component and maps clipping states, and is bundled as a standalone classic script. Its stylesheet stays inside the shadow root; image readers and content extractors do not load React. Permission requests remain in click handlers.
+
 ## Localization
 
 The extension uses the cross-browser `chrome.i18n` compatibility namespace. English is the fallback locale. Simplified Chinese, Japanese, and Polish are available for browsers whose UI language matches.
@@ -34,6 +38,14 @@ The extension uses the cross-browser `chrome.i18n` compatibility namespace. Engl
 User-visible strings live in `public/_locales/<locale>/messages.json`. Add or update every supported locale when changing interface copy. Chrome Web Store listing translations are maintained separately in the developer dashboard; ready-to-paste English and Simplified Chinese copy is available in `STORE_LISTING.md`.
 
 ## Development
+
+### Store delivery
+
+The official repository's **Submit Web Clipper** workflow runs asynchronously after a stable `vX.Y.Z` GitHub Release is published. It builds from that release tag, runs the extension tests, and packages Chromium and Firefox before contacting the stores. Store delivery does not block or withdraw the GitHub Release. The extension keeps its independent version in `apps/extension/package.json`; increase it when preparing an extension update, rather than for every application release.
+
+Each store is checked separately. A version already published (or superseded by a newer public version) is skipped, and the same version awaiting review is treated as already submitted. If another version is awaiting review, the workflow summary reports `waiting-review` without submitting a replacement. This is not an automatic retry: after review completes, manually run **Submit Web Clipper**, enter the original `release_tag`, and select the affected platform. Credential or submission failures remain visible as workflow failures, while the other store is still attempted. Store approval is separate from successful submission.
+
+Manual runs retain platform selection and `dry_run`. Leave `release_tag` empty to build the selected workflow ref. Firefox notes default to a one-line extension version note; custom notes should describe only extension changes.
 
 ### Chromium
 

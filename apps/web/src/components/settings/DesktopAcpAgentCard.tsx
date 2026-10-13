@@ -47,6 +47,8 @@ const statusKey = (adapter: DesktopAcpAdapter | undefined, probing: boolean) => 
   if (!adapter || adapter.detail === "not_probed") return "aiAssistant.agentSource.notProbed";
   if (adapter.detail === "workbuddy_credentials_unavailable") return "aiAssistant.agentSource.workbuddyCredentialsUnavailable";
   if (adapter.detail === "authentication_timeout") return "aiAssistant.agentSource.authenticationTimedOut";
+  if (adapter.detail === "identity_status_unavailable") return "aiAssistant.agentSource.identityStatusNotReported";
+  if (adapter.id === "claudeCode" && adapter.state === "needs_login") return "aiAssistant.agentSource.claudeCodeCredentialsRequired";
   if (adapter.detail === "authentication_failed") return "aiAssistant.agentSource.authenticationFailed";
   if (adapter.detail === "invalid_path") return "aiAssistant.agentSource.invalidPath";
   if (adapter.detail === "desktop_unavailable") return "aiAssistant.agentSource.localDisabled";
@@ -58,7 +60,6 @@ const statusKey = (adapter: DesktopAcpAdapter | undefined, probing: boolean) => 
   if (adapter.id === "piAgent" && adapter.state === "not_installed") return adapter.detail === "adapter_missing" ? "aiAssistant.agentSource.piAgentAdapterMissing" : "aiAssistant.agentSource.piAgentNotFound";
   if ((adapter.id === "workbuddyCn" || adapter.id === "workbuddyIntl") && adapter.state === "not_installed") return "aiAssistant.agentSource.workbuddyNotFound";
   if ((adapter.id === "workbuddyCn" || adapter.id === "workbuddyIntl") && adapter.state === "needs_login") return "aiAssistant.agentSource.workbuddyLoginRequired";
-  if ((adapter.id === "workbuddyCn" || adapter.id === "workbuddyIntl") && adapter.state === "available") return "aiAssistant.agentSource.workbuddyConnectionReady";
   return `aiAssistant.agentSource.states.${adapter.state}`;
 };
 
@@ -155,6 +156,7 @@ const DesktopAcpAgentCardBody = ({ bridge }: { bridge: boolean }) => {
     shown?.state === "needs_login" ||
     (shown?.state === "available" && (isWorkBuddy || authMethods.length > 0)) ||
     shown?.updateError ||
+    shown?.detail === "identity_status_unavailable" ||
     adapterId === "openClaw" ||
     (adapterId === "hermesAgent" && shown?.state === "failed")
   );
@@ -397,6 +399,12 @@ const DesktopAcpAgentCardBody = ({ bridge }: { bridge: boolean }) => {
                     <p>
                       {t(adapterId === "claudeCode" ? "aiAssistant.agentSource.claudeCodeMissingHint" : adapterId === "openClaw" ? "aiAssistant.agentSource.openClawMissingHint" : adapterId === "hermesAgent" ? "aiAssistant.agentSource.hermesAgentMissingHint" : adapterId === "grokBuild" ? "aiAssistant.agentSource.grokBuildMissingHint" : adapterId === "deepseekHarness" ? "aiAssistant.agentSource.deepseekHarnessMissingHint" : adapterId === "piAgent" ? shown.detail === "adapter_missing" ? "aiAssistant.agentSource.piAgentAdapterMissingHint" : "aiAssistant.agentSource.piAgentMissingHint" : adapterId === "workbuddyCn" || adapterId === "workbuddyIntl" ? "aiAssistant.agentSource.workbuddyMissingHint" : "aiAssistant.agentSource.installHint")}
                     </p>
+                  ) : null}
+                  {shown?.detail === "identity_status_unavailable" ? (
+                    <p>{t("aiAssistant.agentSource.identityStatusUnavailable")}</p>
+                  ) : null}
+                  {shown?.state === "needs_login" && adapterId === "claudeCode" ? (
+                    <p>{t("aiAssistant.agentSource.claudeCodeLoginHint")}</p>
                   ) : null}
                   {shown?.state === "needs_login" && adapterId === "piAgent" ? (
                     <p>{t("aiAssistant.agentSource.piAgentLoginHint")}</p>
