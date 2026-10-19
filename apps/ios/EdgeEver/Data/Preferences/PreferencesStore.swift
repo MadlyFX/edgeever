@@ -1,4 +1,45 @@
 import Foundation
+
+// BEGIN GENERATED FONT CATALOG — bun scripts/sync-font-catalog.mjs
+enum NoteImageFontCatalog {
+    static let choices: [(id: String, zh: String, en: String)] = [
+        (id: "smiley", zh: "得意黑", en: "Smiley Sans"),
+        (id: "wenkai", zh: "霞鹜文楷", en: "LXGW WenKai"),
+        (id: "zhuque", zh: "朱雀仿宋", en: "Zhuque Fangsong"),
+        (id: "heavy", zh: "思源黑体 Heavy", en: "Noto Sans SC Heavy"),
+        (id: "puhui", zh: "普惠体", en: "PuHuiTi"),
+        (id: "puhui-heavy", zh: "普惠体 Heavy", en: "PuHuiTi Heavy"),
+        (id: "youshe", zh: "优设标题黑", en: "YouShe Title"),
+        (id: "shuhei", zh: "阿里妈妈数黑体", en: "Alimama ShuHei"),
+        (id: "source-han-serif", zh: "思源宋体", en: "Noto Serif SC"),
+        (id: "anton", zh: "Anton", en: "Anton"),
+        (id: "douyin", zh: "抖音美好体", en: "Douyin Sans"),
+        (id: "mashan", zh: "马善政楷书", en: "Ma Shan Zheng"),
+        (id: "jiangcheng", zh: "江城圆体", en: "Jiangcheng Rounded"),
+        (id: "huangyou", zh: "站酷庆科黄油体", en: "ZCOOL QingKe HuangYou"),
+        (id: "glow", zh: "未来荧黑", en: "Glow Sans"),
+        (id: "kuaile", zh: "站酷快乐体", en: "ZCOOL KuaiLe"),
+        (id: "source-han-sans", zh: "思源黑体", en: "Noto Sans SC"),
+        (id: "source-han-serif-heavy", zh: "思源宋体 Heavy", en: "Noto Serif SC Heavy"),
+        (id: "inter", zh: "Inter", en: "Inter"),
+        (id: "dmserif", zh: "DM Serif Display", en: "DM Serif Display"),
+        (id: "bebas", zh: "Bebas Neue", en: "Bebas Neue"),
+        (id: "spacegrotesk", zh: "Space Grotesk", en: "Space Grotesk"),
+        (id: "jetbrains", zh: "JetBrains Mono", en: "JetBrains Mono"),
+    ]
+    static let templateLabels: [String: (zh: String, en: String, ja: String, pl: String)] = [
+        "glass": (zh: "MiSans", en: "MiSans", ja: "MiSans", pl: "MiSans"),
+        "quote": (zh: "汇文明朝体", en: "Huiwen Mincho", ja: "匯文明朝体", pl: "Huiwen Mincho"),
+        "book": (zh: "思源宋体", en: "Source Han Serif", ja: "源ノ明朝", pl: "Source Han Serif"),
+        "memo": (zh: "MiSans", en: "MiSans", ja: "MiSans", pl: "MiSans"),
+        "bento": (zh: "MiSans", en: "MiSans", ja: "MiSans", pl: "MiSans"),
+        "black-sun": (zh: "Geist Mono / MiSans", en: "Geist Mono / MiSans", ja: "Geist Mono / MiSans", pl: "Geist Mono / MiSans"),
+        "frame": (zh: "思源宋体", en: "Source Han Serif", ja: "源ノ明朝", pl: "Source Han Serif"),
+        "handwritten": (zh: "龙藏体", en: "Long Cang", ja: "Long Cang", pl: "Long Cang"),
+        "code": (zh: "Geist Mono", en: "Geist Mono", ja: "Geist Mono", pl: "Geist Mono"),
+    ]
+}
+// END GENERATED FONT CATALOG
 import Observation
 import SwiftUI
 
@@ -34,12 +75,12 @@ enum AppUILocale {
 
 /// Local image-share choices, independent of the current note or sheet lifetime.
 struct NoteImageSharePreferences: Codable, Equatable {
-    var theme: String = "gradient"
+    var theme: String = "glass"
     var fontStyle: String = "auto"
     var fontSize: String = "lg"
     var cardWidth: String = "wide"
     var format: String = "png"
-    var showTitle: Bool = true
+    var showTitle: Bool = false
     var showNotebook: Bool = false
     var showTags: Bool = false
     var showUpdatedAt: Bool = true
@@ -55,10 +96,10 @@ struct NoteImageSharePreferences: Codable, Equatable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         if let value = try? values.decode(String.self, forKey: .theme),
            ["gradient", "glass", "quote", "book", "memo", "bento", "black-sun", "frame", "handwritten", "code"].contains(value) {
-            theme = value
+            theme = value == "gradient" ? "glass" : value
         }
         if let value = try? values.decode(String.self, forKey: .fontStyle),
-           ["auto", "serif", "sans", "mono", "kai", "smiley", "wenkai", "zhuque", "heavy", "puhui", "puhui-heavy", "youshe", "shuhei"].contains(value) {
+           (["auto", "serif", "sans", "mono", "kai"] + NoteImageFontCatalog.choices.map(\.id)).contains(value) {
             fontStyle = value
         }
         if let value = try? values.decode(String.self, forKey: .fontSize),
@@ -73,7 +114,7 @@ struct NoteImageSharePreferences: Codable, Equatable {
            ["png", "jpeg"].contains(value) {
             format = value
         }
-        showTitle = (try? values.decode(Bool.self, forKey: .showTitle)) ?? true
+        showTitle = (try? values.decode(Bool.self, forKey: .showTitle)) ?? false
         showNotebook = (try? values.decode(Bool.self, forKey: .showNotebook)) ?? false
         showTags = (try? values.decode(Bool.self, forKey: .showTags)) ?? false
         showUpdatedAt = (try? values.decode(Bool.self, forKey: .showUpdatedAt)) ?? true

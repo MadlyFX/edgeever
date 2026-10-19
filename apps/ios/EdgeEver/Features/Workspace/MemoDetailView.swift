@@ -178,8 +178,15 @@ struct MemoDetailView: View {
             NavigationStack {
                 Form {
                     Section(env.preferences.t("主题风格", en: "Theme", pl: "Motyw")) {
-                        Picker(env.preferences.t("主题风格", en: "Theme", pl: "Motyw"), selection: $preferences.noteImageShare.theme) {
-                            Text(env.preferences.t("默认", en: "Classic", pl: "Klasyczny")).tag("gradient")
+                        Picker(env.preferences.t("主题风格", en: "Theme", pl: "Motyw"), selection: Binding(
+                            get: { preferences.noteImageShare.theme },
+                            set: { theme in
+                                var share = preferences.noteImageShare
+                                share.theme = theme
+                                share.fontStyle = "auto"
+                                preferences.noteImageShare = share
+                            }
+                        )) {
                             Text(env.preferences.t("透明", en: "Glass", pl: "Szkło")).tag("glass")
                             Text(env.preferences.t("金句", en: "Quote", pl: "Cytat")).tag("quote")
                             Text(env.preferences.t("书摘", en: "Book excerpt", pl: "Fragment książki")).tag("book")
@@ -193,21 +200,17 @@ struct MemoDetailView: View {
                         .pickerStyle(.menu)
                     }
                     Section(env.preferences.t("字体风格", en: "Typography", pl: "Typografia")) {
-                        Picker(env.preferences.t("字体风格", en: "Typography", pl: "Typografia"), selection: $preferences.noteImageShare.fontStyle) {
-                            Text(env.preferences.t("跟随主题", en: "Follow Theme", pl: "Zgodnie z motywem")).tag("auto")
-                            Text(env.preferences.t("文艺衬线", en: "Serif", pl: "Szeryfowa")).tag("serif")
-                            Text(env.preferences.t("现代无衬线", en: "Sans", pl: "Bezszeryfowa")).tag("sans")
-                            Text(env.preferences.t("极客等宽", en: "Mono", pl: "Monospace")).tag("mono")
-                            Text(env.preferences.t("得意黑", en: "Smiley Sans", pl: "Smiley Sans")).tag("smiley")
-                            Text(env.preferences.t("霞鹜文楷", en: "LXGW WenKai", pl: "LXGW WenKai")).tag("wenkai")
-                            Text(env.preferences.t("朱雀仿宋", en: "Zhuque Fangsong", pl: "Zhuque Fangsong")).tag("zhuque")
-                            Text(env.preferences.t("思源黑体 Heavy", en: "Noto Sans SC Heavy", pl: "Noto Sans SC Heavy")).tag("heavy")
-                            Text(env.preferences.t("普惠体", en: "PuHuiTi", pl: "PuHuiTi")).tag("puhui")
-                            Text(env.preferences.t("普惠体 Heavy", en: "PuHuiTi Heavy", pl: "PuHuiTi Heavy")).tag("puhui-heavy")
-                            Text(env.preferences.t("优设标题黑", en: "YouShe Title", pl: "YouShe Title")).tag("youshe")
-                            Text(env.preferences.t("阿里妈妈数黑体", en: "Alimama ShuHei", pl: "Alimama ShuHei")).tag("shuhei")
+                        NavigationLink {
+                            NoteImageFontPickerView()
+                        } label: {
+                            HStack {
+                                Text(env.preferences.t("字体风格", en: "Typography", pl: "Typografia"))
+                                Spacer()
+                                Text(NoteImageFontPickerOptions.label(preferences))
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.trailing)
+                            }
                         }
-                        .pickerStyle(.menu)
                         Text(env.preferences.t(
                             "下载型字体首次使用需联网并缓存；普惠体等推荐字体使用完整文件，首次下载较大。",
                             en: "Downloadable fonts need a connection on first use and are cached. PuHuiTi and other recommended fonts use larger, complete original files.",
@@ -1210,7 +1213,7 @@ struct MemoDetailView: View {
         fontStyle: String = "auto",
         fontSize: String = "lg",
         cardWidth: String = "wide",
-        showTitle: Bool = true,
+        showTitle: Bool = false,
         showNotebook: Bool = false,
         showTags: Bool = false,
         showUpdatedAt: Bool = true,
