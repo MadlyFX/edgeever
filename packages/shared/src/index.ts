@@ -1,6 +1,7 @@
 export * from "./content";
 export * from "./document-extensions";
 export * from "./text-colors";
+export * from "./image-alignment";
 export * from "./companion";
 export * from "./public-demo";
 export * from "./ai-assistant";
