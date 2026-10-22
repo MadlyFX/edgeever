@@ -440,11 +440,14 @@ describe("Cloudflare deployment entrypoints", () => {
     }
   });
 
-  test("deployed repositories receive guarded daily upstream updates", () => {
+  test("this customized deployment exposes guarded manual upstream updates", () => {
     const workflow = readRepositoryFile(".github/workflows/sync-edgeever-upstream.yml");
     const bunConfig = readRepositoryFile("bunfig.toml");
     const packageJson = JSON.parse(readRepositoryFile("package.json"));
     const scripts = packageJson.scripts as Record<string, string>;
+
+    expect(workflow).toContain("workflow_dispatch:");
+    expect(workflow).not.toContain("schedule:");
 
     expect(workflow).toContain("github.repository != 'tianma-if/edgeever'");
     expect(workflow).toContain("UPSTREAM_REPOSITORY: tianma-if/edgeever");
@@ -498,7 +501,7 @@ describe("Cloudflare deployment entrypoints", () => {
     expect(workflow).toContain("Prefer this workflow over GitHub **Sync fork**");
   });
 
-  test("forks skip every workflow job except upstream updates", () => {
+  test("forks skip official jobs and scope personal validation to its owner", () => {
     const workflowsDirectory = resolve(repositoryRoot, ".github/workflows");
     const workflowFiles = readdirSync(workflowsDirectory)
       .filter((file) => /\.ya?ml$/.test(file))
@@ -513,7 +516,8 @@ describe("Cloudflare deployment entrypoints", () => {
       for (const [index, match] of jobStarts.entries()) {
         const nextJob = jobStarts[index + 1];
         const job = jobs.slice(match.index, nextJob?.index);
-        expect(job).toContain("github.repository == 'tianma-if/edgeever'");
+        const owner = file === "personal-editor-validation.yml" ? "MadlyFX/edgeever" : "tianma-if/edgeever";
+        expect(job).toContain(`github.repository == '${owner}'`);
       }
     }
   });
