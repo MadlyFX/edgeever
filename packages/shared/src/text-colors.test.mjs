@@ -24,7 +24,7 @@ describe("inline text and highlight colors", () => {
   test("normalizes browser RGB values and rejects CSS injection", () => {
     expect(normalizeTextColor("rgb(51, 126, 169)")).toBe("#337ea9");
     expect(normalizeTextColor("#aBc")).toBe("#aabbcc");
-    for (const value of ["red; position:fixed", 'red\" onclick=\"alert(1)', "url(https://example.com)", "rgb(300, 0, 0)"]) {
+    for (const value of ["red; position:fixed", 'red" onclick="alert(1)', "url(https://example.com)", "rgb(300, 0, 0)"]) {
       expect(normalizeTextColor(value)).toBeNull();
       const markdown = docToMarkdown({ type: "doc", content: [{ type: "paragraph", content: [
         { type: "text", text: "Safe", marks: [{ type: "textStyle", attrs: { color: value } }] },
