@@ -25,7 +25,17 @@ interface DesktopGlobalShortcutBinding {
 interface DesktopGlobalShortcutState {
   binding: DesktopGlobalShortcutBinding | null;
   registered: boolean;
+  screenshot: DesktopGlobalShortcutBinding | null;
+  screenshotRegistered: boolean;
   error?: "invalid" | "unavailable" | "saveFailed";
+}
+
+interface DesktopLoginItemState {
+  supported: boolean;
+  openAtLogin: boolean;
+  launchMode: "window" | "tray";
+  status: "disabled" | "enabled" | "requires-approval" | "disabled-by-system" | "unavailable";
+  error?: "invalid" | "saveFailed";
 }
 
 interface EdgeEverDesktopBridge {
@@ -41,9 +51,9 @@ interface EdgeEverDesktopBridge {
   readClipboard?(): Promise<{ html: string; text: string; images: Uint8Array[] }>;
   setSessionToken(value: string): Promise<{ stored: boolean }>;
   clearSessionToken(): Promise<{ stored: false }>;
-  testPicGoConnection(endpoint: string): Promise<boolean>;
+  testPicGoConnection(input: { endpoint: string; serverKey?: string }): Promise<boolean>;
   uploadPicGoImage(input: {
-    endpoint: string; bytes: Uint8Array; filename: string; mimeType: string;
+    endpoint: string; serverKey?: string; bytes: Uint8Array; filename: string; mimeType: string;
     copy: import("@/lib/picgo").PicGoFailureCopy;
   }): Promise<{ url: string } | { fallback: true }>;
   publicNetworkFetch(requestId: string, input: import("@edgeever/shared").PluginPublicFetchRequest): Promise<import("@edgeever/shared").PluginPublicFetchResponse>;
@@ -83,6 +93,9 @@ interface EdgeEverDesktopBridge {
   }>;
   globalShortcut(): Promise<DesktopGlobalShortcutState>;
   setGlobalShortcut(binding: DesktopGlobalShortcutBinding | null): Promise<DesktopGlobalShortcutState>;
+  setScreenshotShortcut(binding: DesktopGlobalShortcutBinding | null): Promise<DesktopGlobalShortcutState>;
+  loginItem(): Promise<DesktopLoginItemState | null>;
+  setLoginItem(patch: { openAtLogin?: boolean; launchMode?: "window" | "tray" }): Promise<DesktopLoginItemState | null>;
   captureGlobalShortcut(capturing: boolean): Promise<boolean>;
   setAccountScope(accountId: string | null): Promise<{ ready: true; scope: string }>;
   updateStatus(): Promise<DesktopUpdateStatus>;
@@ -104,6 +117,8 @@ interface EdgeEverDesktopBridge {
   readResource(id: string): Promise<{ type: string; bytes: Uint8Array }>;
   removeStagedResource(id: string): Promise<void>;
   onCommand(callback: (command: string) => void): () => void;
+  setRichTextHeadingShortcutActive?(active: boolean): void;
+  onHeadingShortcut?(callback: (level: number) => void): () => void;
   onHibernatePrepare?(callback: () => void | Promise<void>): () => void;
   syncScheduledTasks(tasks: import("@edgeever/shared").ScheduledTask[]): Promise<{ scheduled: number }>;
   onScheduledTask(callback: (payload: {

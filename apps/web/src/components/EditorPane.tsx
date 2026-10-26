@@ -177,6 +177,7 @@ import {
   EDITOR_LOCAL_SAVE_DELAY_MS,
   formatShortcutBinding,
   getEditableMemoTitle,
+  isPrimaryModifierPressed,
   getNotebookMoveOptions,
   readDesktopReadingProtectionPreference,
   readEditorOutlineCollapsedPreference,
@@ -190,8 +191,10 @@ import {
 import { ThemeBlock } from "./ThemeBlock";
 import { EditorPhonePreview, PhonePreviewGlyph } from "./EditorPhonePreview";
 import {
+  applyHeadingLevelShortcut,
   applyPlainTextTab,
   getAiSlashCommandStart,
+  headingShortcutLevelFromEvent,
   preserveEmptyListIndentOnBackspace,
   saveAndSyncEditor,
   shouldOpenAiFromSpace,
@@ -599,6 +602,7 @@ const RichEditorPane = ({
     enabled: noteLinkPickerOpen,
   });
   const [editorScrollContainer, setEditorScrollContainer] = useState<HTMLDivElement | null>(null);
+  const [collapsedOutlineAnchor, setCollapsedOutlineAnchor] = useState<HTMLDivElement | null>(null);
   const [editorScrollbarGutter, setEditorScrollbarGutter] = useState(0);
   const [headerTitleSlot, setHeaderTitleSlot] = useState<HTMLDivElement | null>(null);
   const [headerStatusCluster, setHeaderStatusCluster] = useState<HTMLDivElement | null>(null);
@@ -686,6 +690,7 @@ const RichEditorPane = ({
   const memoRef = useRef<MemoDetail | null>(memo);
   const editSessionRef = useRef<MemoEditSession | null>(null);
   const editorRef = useRef<Editor | null>(null);
+  const headingShortcutSurfaceRef = useRef({ markdown: false, plainText: false });
   const editorCanvasInteractionVersionRef = useRef(0);
   const persistResourceInsertionDraftRef = useRef<() => Promise<unknown>>(() => Promise.resolve());
   const openAiAssistantRef = useRef<() => void>(() => undefined);
@@ -1273,6 +1278,17 @@ const RichEditorPane = ({
         spellcheck: spellcheckEnabled ? "true" : "false",
       },
       handleKeyDown: (view, event) => {
+        if (view.editable) {
+          const headingLevel = headingShortcutLevelFromEvent(event);
+          if (
+            headingLevel !== null
+            && applyHeadingLevelShortcut(view.state, view.dispatch, headingLevel)
+          ) {
+            event.preventDefault();
+            return true;
+          }
+        }
+
         const { selection } = view.state;
         const currentNode = selection.$from.parent;
         if (event.key === "Backspace" && preserveEmptyListIndentOnBackspace(view.state, view.dispatch)) {
@@ -1303,7 +1319,8 @@ const RichEditorPane = ({
         }
 
         const shortcutKey = event.key.toLowerCase();
-        if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && shortcutKey === "k") {
+        // Command on Apple, Control elsewhere. Control stays free for macOS text movement.
+        if (isPrimaryModifierPressed(event) && !event.altKey && !event.shiftKey && shortcutKey === "k") {
           event.preventDefault();
           openExternalLinkDialogRef.current();
           return true;
@@ -1311,7 +1328,7 @@ const RichEditorPane = ({
 
         if (
           (shortcutKey !== "f" && shortcutKey !== "h") ||
-          (!event.ctrlKey && !event.metaKey) ||
+          !isPrimaryModifierPressed(event) ||
           event.altKey ||
           (shortcutKey === "f" && event.shiftKey)
         ) {
@@ -1435,6 +1452,10 @@ const RichEditorPane = ({
     onUnsafeRichTableEdit: setRichTableEditBlocked,
   });
   const useMarkdownSourceEditor = !useMobilePlainTextEditor && isMarkdownMode;
+  headingShortcutSurfaceRef.current = {
+    markdown: useMarkdownSourceEditor,
+    plainText: useMobilePlainTextEditor,
+  };
 
   const applyPropertyFields = useCallback((source: string | null) => {
     if (source === null || hydratingRef.current) return;
@@ -2692,6 +2713,49 @@ const RichEditorPane = ({
   }, [editor, effectiveReadOnly, hydratedEditorMemoId, memo]);
 
   useEffect(() => {
+    if (!isEditorReady(editor)) {
+      window.edgeeverDesktop?.setRichTextHeadingShortcutActive?.(false);
+      return;
+    }
+
+    const syncHeadingShortcutTarget = () => {
+      const surface = headingShortcutSurfaceRef.current;
+      const active = editor.isEditable
+        && editor.isFocused
+        && !surface.markdown
+        && !surface.plainText;
+      window.edgeeverDesktop?.setRichTextHeadingShortcutActive?.(active);
+    };
+    editor.on("focus", syncHeadingShortcutTarget);
+    editor.on("blur", syncHeadingShortcutTarget);
+    syncHeadingShortcutTarget();
+    return () => {
+      editor.off("focus", syncHeadingShortcutTarget);
+      editor.off("blur", syncHeadingShortcutTarget);
+      window.edgeeverDesktop?.setRichTextHeadingShortcutActive?.(false);
+    };
+  }, [editor, effectiveReadOnly, hydratedEditorMemoId, memo, useMarkdownSourceEditor, useMobilePlainTextEditor]);
+
+  useEffect(() => {
+    const unsubscribe = window.edgeeverDesktop?.onHeadingShortcut?.((level) => {
+      if (level !== 0) return;
+      const surface = headingShortcutSurfaceRef.current;
+      if (surface.markdown || surface.plainText) return;
+      const current = editorRef.current;
+      if (!current || current.isDestroyed || !current.isEditable || !current.isFocused) return;
+      let editorView;
+      try {
+        editorView = current.view;
+      } catch {
+        return;
+      }
+      if (!editorView.editable) return;
+      applyHeadingLevelShortcut(current.state, editorView.dispatch, 0);
+    });
+    return () => unsubscribe?.();
+  }, []);
+
+  useEffect(() => {
     if (!isEditorReady(editor) || !memo) {
       return;
     }
@@ -3834,12 +3898,12 @@ const RichEditorPane = ({
 
   const editorColumnMatchesArticle = !useMarkdownSourceEditor;
   const editorPaneTight = editorColumnWidth > 0 && editorColumnWidth < EDITOR_PANE_TIGHT_PX;
-  const outlineReservesSpace = !editorPaneTight
+  const showDocumentOutline = !editorPaneTight
     && !isMobileViewport
     && !useMobilePlainTextEditor
     && !useMarkdownSourceEditor
-    && !phonePreviewOpen
-    && !editorOutlineCollapsed;
+    && !phonePreviewOpen;
+  const outlineReservesSpace = showDocumentOutline && !editorOutlineCollapsed;
   const compactEditorReadingGutter = shouldCompactEditorReadingGutter({
     aiAssistantOpen,
     desktopColumn: isDesktopColumn,
@@ -4359,6 +4423,7 @@ const RichEditorPane = ({
         />
       </header>
 
+      <div className="relative min-h-0 min-w-0 flex-1">
       <div
         ref={setEditorScrollContainerRef}
         data-editor-theme="default"
@@ -4368,7 +4433,7 @@ const RichEditorPane = ({
           "--memo-content-divider-spacing": `${MEMO_CONTENT_STYLE.divider.marginVertical}px`,
         } as CSSProperties}
         className={cn(
-          "edgeever-editor relative min-h-0 flex-1 bg-transparent",
+          "edgeever-editor relative h-full min-h-0 bg-transparent",
           MEMO_EDITOR_READING_GUTTER_PROPERTIES_CLASS_NAME,
           useMobilePlainTextEditor
             ? "overflow-visible"
@@ -4538,16 +4603,26 @@ const RichEditorPane = ({
               noteProse={noteProse}
             />
           )}
-          {!editorPaneTight && !isMobileViewport && !useMobilePlainTextEditor && !useMarkdownSourceEditor && !phonePreviewOpen && (
+          {showDocumentOutline && (
             <EditorOutline
               editor={editor}
               scrollContainer={editorScrollContainer}
+              collapsedAnchor={collapsedOutlineAnchor}
               collapsed={editorOutlineCollapsed}
               shortcutLabel={formatShortcutBinding(shortcutSettings.toggleOutline)}
               onCollapsedChange={handleEditorOutlineCollapsedChange}
             />
           )}
         </div>
+      </div>
+      {showDocumentOutline ? (
+        <div
+          ref={setCollapsedOutlineAnchor}
+          className="pointer-events-none absolute top-6 z-10 h-8 w-8"
+          style={{ right: editorScrollbarGutter }}
+          data-editor-outline-anchor="collapsed"
+        />
+      ) : null}
       </div>
 
       {noteLinkHintPosition && (

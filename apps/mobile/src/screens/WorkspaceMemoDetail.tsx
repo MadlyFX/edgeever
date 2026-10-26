@@ -165,7 +165,7 @@ const loadAuthenticatedImageDataUrl = (
 };
 
 const alertProtectedImageLoadFailure = (
-  locale: "zh-CN" | "en-US" | "ja" | "pl",
+  locale: "zh-CN" | "en-US" | "ja" | "pl" | "ru",
   failure: ProtectedResourceLoadFailure
 ) => {
   const statusLabel = failure.status != null ? String(failure.status) : locale !== "zh-CN" ? "network error" : "网络错误";
@@ -1159,7 +1159,7 @@ export const MemoDetailModal = ({
               <ChevronLeft color={editor.uploading ? "#cbd5e1" : "#0f172a"} size={30} />
             </Pressable>
             <View style={styles.createMemoHeaderActions}>
-              <Text numberOfLines={1} style={[styles.createMemoStatus, styles.richEditorHeaderStatus, (editor.saving || editor.uploading || editor.dirty) && styles.createMemoStatusActive, editor.error && styles.richEditorStatusError]}>{editor.saveLabel}</Text>
+              <Text numberOfLines={1} style={[styles.createMemoStatus, styles.richEditorHeaderStatus, editor.saveEmphasized && styles.createMemoStatusActive, editor.error && styles.richEditorStatusError]}>{editor.saveLabel}</Text>
               <Pressable
                 accessibilityLabel="完成编辑"
                 accessibilityRole="button"
@@ -1167,7 +1167,7 @@ export const MemoDetailModal = ({
                 onPress={() => void editor.requestClose()}
                 style={[styles.createMemoDoneButton, (editor.uploading || !editor.ready) && styles.createMemoDoneButtonDisabled]}
               >
-                {editor.saving ? <ActivityIndicator color="#64748b" size="small" /> : <Text style={[styles.createMemoDoneText, (editor.uploading || !editor.ready) && styles.createMemoDoneTextDisabled]}>完成</Text>}
+                <Text style={[styles.createMemoDoneText, (editor.uploading || !editor.ready) && styles.createMemoDoneTextDisabled]}>完成</Text>
               </Pressable>
             </View>
           </View>
