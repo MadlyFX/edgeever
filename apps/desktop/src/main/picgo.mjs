@@ -53,6 +53,8 @@ export const normalizePicGoServerKey = (value) => {
   if (typeof value !== "string") throw new Error("PicGo server key is invalid");
   const key = value.trim();
   if (!key) return "";
+  // Reject control characters so the key cannot inject headers or log entries.
+  // oxlint-disable-next-line no-control-regex -- control characters are explicitly invalid
   if (key.length > 512 || /[\u0000-\u0020\u007f]/.test(key)) throw new Error("PicGo server key is invalid");
   return key;
 };
