@@ -2867,6 +2867,13 @@ export const ru = {
     },
   },
   editorToolbar: {
+    colors: "Цвета текста и выделения",
+    textColor: "Цвет текста",
+    highlightColor: "Цвет выделения",
+    defaultColor: "Цвет текста по умолчанию",
+    noHighlight: "Без выделения",
+    resetColors: "Сбросить цвета текста и выделения",
+    colorNames: { gray: "Серый", brown: "Коричневый", orange: "Оранжевый", yellow: "Жёлтый", green: "Зелёный", blue: "Синий", purple: "Фиолетовый", pink: "Розовый", red: "Красный" },
     toolbar: "Панель редактора",
     showMore: "Показать больше инструментов",
     showLess: "Свернуть панель редактора",
