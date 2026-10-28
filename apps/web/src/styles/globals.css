@@ -2308,10 +2308,7 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
 }
 
 .ProseMirror .edgeever-image-gallery__toolbar {
-  position: absolute;
-  bottom: 100%;
-  inset-inline-start: 0;
-  z-index: 10;
+  position: relative;
   visibility: hidden;
   pointer-events: none;
   display: flex;
@@ -2326,15 +2323,6 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
   background: hsl(var(--card));
   padding: 0.3rem;
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
-}
-
-/* Bridge the gap so the pointer can reach the floating toolbar. */
-.ProseMirror .edgeever-image-gallery__toolbar::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 100%;
-  height: 0.5rem;
 }
 
 .ProseMirror .edgeever-image-gallery:hover > .edgeever-image-gallery__toolbar,

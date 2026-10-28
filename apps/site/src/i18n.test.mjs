@@ -91,12 +91,13 @@ describe("site locale routing", () => {
   });
 
   test("keeps best practices showcase copy and media counts aligned across locales", () => {
+    const expectedCaseCount = bestPracticesPageCopy["zh-CN"].categories.flatMap((c) => c.cases).length;
     for (const locale of siteLocales) {
       expect(collectKeys(bestPracticesPageCopy[locale])).toEqual(
         collectKeys(bestPracticesPageCopy["zh-CN"]),
       );
       const cases = bestPracticesPageCopy[locale].categories.flatMap((c) => c.cases);
-      expect(cases).toHaveLength(17);
+      expect(cases).toHaveLength(expectedCaseCount);
       for (const item of cases) {
         const assets = showcaseCaseAssets[item.id];
         expect(assets).toBeDefined();
