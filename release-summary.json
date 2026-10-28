@@ -1,38 +1,35 @@
 {
-  "version": "2.9.0",
+  "version": "2.13.0",
   "changes": {
     "en-US": [
-      "The desktop app can capture the screen into a note from its menu. The shortcut starts unset. After you bind one in shortcut settings, it works from other apps. Press it, drag a region, and release to save a note. Double-click captures the whole screen, and Esc cancels. The shortcut is saved only on this device. The first capture needs screen-recording permission.",
-      "On the web and desktop apps, the Notebooks heading collapses or expands the whole notebook list. Each notebook keeps its own expanded state, and the open note stays open.",
-      "After the document outline is collapsed, the button that opens it again stays beside the editor and no longer scrolls away with the note.",
-      "On macOS, a workspace shortcut bound to Command no longer also fires for Control, so Ctrl+F and Ctrl+N stay available for moving through text. Windows and Linux still use Control. Shortcuts already saved keep the modifier shown on the settings screen.",
-      "On the signed-in devices list, the current device uses a light gray badge. That row’s button is labeled Sign out. Other devices use a trash icon, and hovering it says that device will be signed out.",
-      "On the web, desktop, Android, and iOS apps, newly inserted images and images with no saved width default to the large width (72%). Images that already have a saved width stay as they are.",
-      "New workspaces, and upgrades that still contain only the untouched welcome note, receive the Chinese 功能演示 and English Feature Demos example notebooks. Instances that already contain your own notes stay unchanged, and no manual migration is required.",
-      "Default notebooks that never had their appearance changed return to the shared slate icon. Notebooks with a saved appearance, including one that chose a factory color again, stay as they are. The upgrade clears those untouched factory colors automatically.",
-      "In notebook appearance settings, Reset to default shows a reset icon. The confirm button is dark and labeled Confirm. The note under the title that said changes apply only after saving is gone. The settings still save only after you confirm."
+      "Insert chemical formulas and equations, and continue typing naturally after inserting or editing formulas. (#717, #719; @dkoryto, #718, #720)",
+      "Download share QR codes as PNG or SVG, with consistent PNG image dimensions. (#714; @dkoryto, #716)",
+      "Improve attachment restore and shared-resource security to prevent malicious restored content from executing scripts. (#701; @sivdead, #711)",
+      "Fix notes and nested notebooks remaining queued when their parent notebook has not synced yet. (#712)",
+      "Fix Mermaid diagrams with HTML labels in the enlarged viewer and preserve compact subgraph layouts. (#704)",
+      "Preserve the drop position while images upload, remove empty galleries after deleting all images, and refine image controls. (#707, #709)",
+      "Keep single tildes in text such as 1~2~3 instead of rendering accidental strikethrough. (#698)",
+      "Keep the Simplified Chinese default title out of untitled shared pages and link previews. (#713; @dkoryto, #715)"
     ],
     "zh-CN": [
-      "桌面端可以从菜单把屏幕截成笔记。快捷键默认未设置，在快捷键设置里绑定后，其他应用中也能使用。按下后拖拽选择区域，松开即保存为笔记；双击截取整个屏幕，Esc 取消。快捷键只保存在当前设备。第一次截图需要允许屏幕录制。",
-      "网页和桌面端点击「笔记本」标题，可以收起或展开整个笔记本列表。每个笔记本自己的展开状态会保留，当前打开的笔记不会关闭。",
-      "收起文档大纲后，重新展开的按钮会留在编辑区旁边，滚动笔记时不再滑出视野。",
-      "在 macOS 上，绑定了 Command 的工作区快捷键不再同时响应 Control，Ctrl+F 和 Ctrl+N 可以继续用来移动文字。Windows 和 Linux 仍使用 Control。已经保存的快捷键沿用设置页上显示的修饰键。",
-      "登录设备列表里，当前设备改为浅灰色标记。当前这一行的按钮写明「退出当前登录」；其他设备改为垃圾桶图标，悬停时说明会退出该设备。",
-      "网页、桌面、Android 和 iOS 上，新插入的图片以及没有保存过宽度的图片，默认使用较大宽度（72%）。已经保存过宽度的图片保持不变。",
-      "新的工作区，以及升级后仍然只有未改动欢迎笔记的实例，会得到中文「功能演示」和英文 Feature Demos 示例笔记本。已经有自己笔记的实例不会改变，也不需要手动迁移。",
-      "从未改过外观的默认笔记本会回到共用的石板色图标。已经保存过外观的笔记本，包括重新选过出厂颜色的笔记本，保持原样。升级会自动清掉这些未改动的出厂颜色。",
-      "笔记本外观设置里，「恢复默认」带有重置图标，确认按钮改为深色并写明「确认」。标题下「保存后生效」的说明已去掉。仍需确认后才会保存。"
+      "支持插入化学式与化学方程式，插入或编辑公式后可顺畅继续输入。（#717、#719；@dkoryto，#718、#720）",
+      "支持将分享二维码下载为 PNG 或 SVG，PNG 图片尺寸保持一致。（#714；@dkoryto，#716）",
+      "加强附件恢复与共享资源安全校验，防止恶意恢复内容执行脚本。（#701；@sivdead，#711）",
+      "修复父笔记本尚未同步时，笔记及子笔记本持续卡在同步队列的问题。（#712）",
+      "修复含 HTML 标签的 Mermaid 图表无法放大查看的问题，并改善紧凑子图布局。（#704）",
+      "图片上传期间保留拖放插入位置，删除全部图片后移除空图库，并统一图片控件的视觉样式。（#707、#709）",
+      "保留 1~2~3 等文本中的单波浪线，避免误显示为删除线。（#698）",
+      "修复无标题分享页面及链接预览中出现简体中文默认标题的问题。（#713；@dkoryto，#715）"
     ],
     "ja": [
-      "デスクトップアプリのメニューから、画面をノートとして保存できます。ショートカットは初期状態では未設定です。ショートカット設定で割り当てると、他のアプリからも使えます。押して範囲をドラッグし、離すとノートになります。ダブルクリックで画面全体、Esc でキャンセルです。ショートカットはこの端末にだけ保存されます。初回は画面収録の許可が必要です。",
-      "ウェブとデスクトップでは、「ノートブック」の見出しで一覧全体を開閉できます。各ノートブックの展開状態は保持され、開いているノートは閉じません。",
-      "ドキュメントアウトラインを閉じたあと、再表示ボタンはエディタの横に残り、ノートをスクロールしても見えなくなりません。",
-      "macOS では、Command に割り当てたワークスペースのショートカットが Control でも発動しなくなりました。Ctrl+F と Ctrl+N は文字の移動に使えます。Windows と Linux は引き続き Control です。保存済みのショートカットは、設定画面に表示されていた修飾キーのままです。",
-      "サインイン中の端末一覧では、現在の端末が薄いグレーの表示になりました。その行のボタンは「サインアウト」です。他の端末はゴミ箱アイコンになり、ホバーでその端末をサインアウトすると分かります。",
-      "ウェブ、デスクトップ、Android、iOS では、新しく挿入した画像と幅が保存されていない画像が、既定で大きい幅（72%）になります。保存済みの幅はそのままです。",
-      "新しいワークスペースと、未編集のようこそノートだけのままアップグレードしたインスタンスには、中国語の「功能演示」と英語の Feature Demos サンプルノートブックが追加されます。自分のノートがすでにあるインスタンスは変わらず、手動の移行も不要です。",
-      "外観を一度も変えていない既定ノートブックは、共通のスレート色アイコンに戻ります。外観を保存済みのノートブックは、初期色を選び直したものも含めてそのままです。アップグレード時に、未変更の初期色は自動で消えます。",
-      "ノートブックの外観設定では、「既定に戻す」にリセットアイコンが付き、確認ボタンは濃い色の「確認」になりました。タイトル下の「保存後に反映されます」という説明はなくなりました。設定は確認するまで保存されません。"
+      "化学式と化学反応式を挿入でき、数式の挿入・編集後も自然に入力を続けられます。",
+      "共有QRコードをPNGまたはSVGで保存でき、PNGの画像サイズも統一されます。",
+      "添付ファイルの復元と共有リソースの安全性を強化し、不正な復元コンテンツによるスクリプト実行を防ぎます。",
+      "親ノートブックの同期前に作成したノートや子ノートブックが同期待ちのままになる問題を修正します。",
+      "HTMLラベルを含むMermaid図の拡大表示を修正し、サブグラフのコンパクトな配置を改善します。",
+      "画像アップロード中のドロップ位置を保持し、全画像削除後の空ギャラリーを除去して、画像操作の表示を整えます。",
+      "1~2~3のような単一チルダを含む文章が誤って取り消し線になる問題を修正します。",
+      "無題の共有ページやリンクプレビューに簡体字中国語の既定タイトルが表示される問題を修正します。"
     ]
   }
 }
