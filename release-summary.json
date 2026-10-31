@@ -1,26 +1,23 @@
 {
-  "version": "2.14.0",
+  "version": "2.16.1",
   "changes": {
     "en-US": [
-      "Move existing images within notes and reorder gallery images by dragging, with gallery controls shown on interaction. (#708)",
-      "Fix excessive blank lines when copying notes to other apps.",
-      "New desktop backup configurations retain one copy by default, with choices of 1, 3 or 5 copies; existing retention settings are preserved.",
-      "Improve clipping of dynamically loaded Instagram posts and carousel images.",
-      "Add step-by-step Instagram and GitHub repository metadata clipping examples to the best practices guide."
+      "Preserve unsaved mind-map, flowchart and architecture edits during synchronization, including new-note creation. Thanks @sivdead (#742); fixes #737.",
+      "Preserve infographic drafts and active input during synchronization, and refresh remote changes when the editor is idle.",
+      "Reduce database reads during backups while preserving consistency checks, and improve desktop backup network diagnostics.",
+      "Reduce repeated database counts during pagination, exports, synchronization and task-history polling. Upgrading the server applies migration 0084 with a one-time task-count backfill."
     ],
     "zh-CN": [
-      "支持拖动笔记中已有图片及调整图库图片顺序，图库控件在交互时显示。（#708）",
-      "修复复制笔记到其他应用时出现过多空行的问题。",
-      "桌面端新备份配置默认保留 1 份，可选 1、3 或 5 份；已有配置继续使用原保留设置。",
-      "改善动态加载的 Instagram 帖子与轮播图片的剪藏效果。",
-      "最佳实践指南新增 Instagram 与 GitHub 仓库元数据剪藏示例。"
+      "修复思维导图、流程图及架构图在同步和新建笔记时丢失未保存编辑的问题。感谢 @sivdead（#742）；修复 #737。",
+      "修复信息图同步时的草稿与输入丢失问题，并在空闲时正确显示远端更新。",
+      "减少备份过程中的数据库读取，保留一致性检查，并改善桌面备份网络故障诊断。",
+      "减少分页、导出、同步和任务历史轮询中的重复数据库计数。服务端升级会执行迁移 0084，一次性回填任务计数。"
     ],
     "ja": [
-      "ノート内の既存画像の移動とギャラリー画像の並べ替えをドラッグで行え、操作時にギャラリーのコントロールを表示します。",
-      "ノートをほかのアプリへコピーした際に空行が増えすぎる問題を修正します。",
-      "デスクトップの新規バックアップ設定では既定で1世代を保持し、1・3・5世代から選択できます。既存の保持設定は維持されます。",
-      "動的に読み込まれるInstagramの投稿とカルーセル画像のクリッピングを改善します。",
-      "活用ガイドにInstagramとGitHubリポジトリのメタデータをクリッピングする手順例を追加します。"
+      "同期中や新規ノート作成時に、マインドマップ・フローチャート・構成図の未保存の編集が失われる問題を修正しました。",
+      "インフォグラフィックの同期中に下書きや入力が失われる問題を修正し、編集中でない場合はリモートの変更を正しく反映します。",
+      "バックアップの整合性チェックを維持しながらデータベース読み取りを削減し、デスクトップのネットワーク障害診断を改善しました。",
+      "ページ送り・エクスポート・同期・タスク履歴のポーリング時の重複集計を削減しました。サーバー更新時にマイグレーション0084でタスク件数を一度だけ集計します。"
     ]
   }
 }

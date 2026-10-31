@@ -12,13 +12,13 @@ import {
   cacheDesktopSession,
   clearCachedDesktopSession,
   getConfiguredDesktopApiBaseUrl,
-  getCachedDesktopSession,
+  getWorkspaceSession,
   saveDesktopApiBaseUrl,
 } from "@/lib/api";
 import { classifyLoginError, getLoginProblemMessageKey } from "@/lib/login-error";
 import { EVERNOTE_MIGRATION_PATH } from "@/lib/routes";
-import { isBrowserOffline } from "@/lib/network-status";
 import { syncPublishedNoteBodyFont } from "@/lib/published-note-body-font";
+import { getNoteWindowMemoId } from "@/lib/desktop-note-windows";
 import type { AuthSession } from "@edgeever/shared";
 
 const EvernoteImportGuidePane = lazy(() =>
@@ -29,6 +29,7 @@ const WorkspaceApp = lazy(() => import("@/components/WorkspaceApp").then((module
 const PublicNotebookSharePage = lazy(() => import("@/components/PublicNotebookSharePage").then(module => ({ default: module.PublicNotebookSharePage })));
 const PublicSharePage = lazy(() => import("@/components/PublicSharePage").then((module) => ({ default: module.PublicSharePage })));
 const PublicTableFormPage = lazy(() => import("@/components/PublicTableFormPage").then((module) => ({ default: module.PublicTableFormPage })));
+const NoteWindowApp = lazy(() => import("@/components/NoteWindowApp").then((module) => ({ default: module.NoteWindowApp })));
 const NotebookSiteManagementPage = lazy(() => import("@/components/NotebookSiteManagementPage").then((module) => ({ default: module.NotebookSiteManagementPage })));
 
 const AuthLoadingScreen = ({ title = "EdgeEver", detail }: { title?: string; detail?: string }) => (
@@ -70,17 +71,7 @@ const AuthenticatedWorkspace = ({ siteManagement = false }: { siteManagement?: b
 
   const sessionQuery = useQuery({
     queryKey: ["auth", "session"],
-    queryFn: async () => {
-      try {
-        const session = await api.getSession();
-        await cacheDesktopSession(session);
-        return session;
-      } catch (error) {
-        const cached = getCachedDesktopSession();
-        if (cached?.authenticated && isBrowserOffline()) return cached;
-        throw error;
-      }
-    },
+    queryFn: getWorkspaceSession,
     enabled: !desktopBridge?.isAvailable || Boolean(configuredDesktopApiBaseUrl),
     retry: false,
   });
@@ -148,7 +139,11 @@ const AuthenticatedWorkspace = ({ siteManagement = false }: { siteManagement?: b
     const handleUnauthorized = () => {
       const current = queryClient.getQueryData<AuthSession>(["auth", "session"]);
       clearCachedDesktopSession();
-      queryClient.clear();
+      // Keep the observed session query alive so this transition is delivered
+      // even when a background request discovers that the session was revoked.
+      queryClient.removeQueries({
+        predicate: ({ queryKey }) => queryKey[0] !== "auth" || queryKey[1] !== "session",
+      });
       queryClient.setQueryData<AuthSession>(["auth", "session"], {
         authRequired: current?.authRequired ?? true,
         authenticated: false,
@@ -224,11 +219,23 @@ const AuthenticatedWorkspace = ({ siteManagement = false }: { siteManagement?: b
 };
 
 export const App = () => {
+  const [noteWindowMemoId] = useState(() => getNoteWindowMemoId());
   useEffect(() => {
     const bridge = window.edgeeverDesktop;
     const baseUrl = getConfiguredDesktopApiBaseUrl();
-    if (bridge?.isAvailable && baseUrl) void bridge.setApiBaseUrl(baseUrl);
-  }, []);
+    // The main window owns the instance; a note window only edits its note.
+    if (bridge?.isAvailable && baseUrl && !noteWindowMemoId) void bridge.setApiBaseUrl(baseUrl);
+  }, [noteWindowMemoId]);
+
+  if (noteWindowMemoId) {
+    return (
+      <TooltipProvider delayDuration={0} skipDelayDuration={0}>
+        <Suspense fallback={<AuthLoadingScreen />}>
+          <NoteWindowApp memoId={noteWindowMemoId} />
+        </Suspense>
+      </TooltipProvider>
+    );
+  }
 
   return (
     <TooltipProvider delayDuration={0} skipDelayDuration={0}>
