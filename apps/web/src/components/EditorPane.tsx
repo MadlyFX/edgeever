@@ -1272,7 +1272,7 @@ const RichEditorPane = ({
         pdf: PdfAttachment,
         file: FileAttachment,
         pluginEmbed: pluginEmbedExtension,
-        table: { table: { renderWrapper: true } },
+        table: { table: { renderWrapper: true, resizable: true } },
       }),
       EdgeEverLink.configure({ openOnClick: false }),
       inlineFieldExtension,

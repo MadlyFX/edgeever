@@ -2730,10 +2730,43 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
   min-width: 100%;
 }
 
-.ProseMirror table col,
-.markdown-content table col {
+/* Columns the user has dragged to a width keep it (inline style from colwidth). */
+.ProseMirror table col:not([style^="width:"]):not([style*=" width:"]),
+.markdown-content table col:not([style^="width:"]):not([style*=" width:"]) {
   width: var(--mobile-table-column-width) !important;
   min-width: var(--mobile-table-column-width) !important;
+}
+
+.ProseMirror .column-resize-handle {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--brand-green);
+  pointer-events: none;
+}
+
+.ProseMirror.resize-cursor,
+.ProseMirror.resize-cursor td,
+.ProseMirror.resize-cursor th {
+  cursor: col-resize;
+}
+
+.ProseMirror.row-resize-hover:not(.resize-cursor),
+.ProseMirror.row-resize-hover:not(.resize-cursor) td,
+.ProseMirror.row-resize-hover:not(.resize-cursor) th,
+.ProseMirror.row-resizing,
+.ProseMirror.row-resizing td,
+.ProseMirror.row-resizing th {
+  cursor: row-resize;
+}
+
+.ProseMirror th[colwidth],
+.ProseMirror td[colwidth] {
+  width: auto;
+  min-width: 0;
+  max-width: none;
 }
 
 .ProseMirror th,
@@ -2790,22 +2823,22 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
 }
 
 @media (min-width: 768px) {
-  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))),
-  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) {
+  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])),
+  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) {
     width: 100%;
     table-layout: auto;
   }
 
-  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) col,
-  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) col {
+  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) col,
+  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) col {
     width: auto !important;
     min-width: 0 !important;
   }
 
-  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) th,
-  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) td,
-  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) th,
-  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))) td {
+  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) th,
+  .ProseMirror table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) td,
+  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) th,
+  .markdown-content table:not(:has(> colgroup > col:first-child:nth-last-child(n+5))):not(:has(> tbody > tr > [colwidth])) td {
     width: auto;
     min-width: 0;
     max-width: none;
