@@ -1279,7 +1279,7 @@ describe("ACP stdio session", () => {
     try {
       const scriptPath = await writeFakeAgent(directory, {
         reportPath, advertiseAuth: true, hangAuth: true, authMethodId: "external",
-        codeBuddy: { authUrls: [loginLink, "https://evil.example/login?state=leak", "http://www.codebuddy.ai/login", "https://www.codebuddy.ai/login?state=private-login-state", "https://www.codebuddy.ai/login?state=private-login-state"] },
+        codeBuddy: { authUrls: ["https://evil.example/login?state=leak", "http://www.codebuddy.ai/login", "https://www.codebuddy.ai/login?state=private-login-state", "https://www.codebuddy.ai/login?state=private-login-state"] },
       });
       const { runtime, opened, diagnostics } = codeBuddyRuntime(scriptPath);
       expect(runtime.cancelAuthentication("codebuddy")).toEqual({ cancelled: false });
