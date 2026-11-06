@@ -40,7 +40,7 @@ describe("memo template seeds", () => {
     test("shows an unedited default template in the viewer's language, whatever language it was stored in", () => {
       expect(localizeDefaultMemoTemplate(stored("zh-CN"), "pl-PL")).toEqual(stored("pl"));
       expect(localizeDefaultMemoTemplate(stored("pl"), "ja")).toEqual(stored("ja"));
-      expect(localizeDefaultMemoTemplate(stored("ja"), "fr-FR")).toEqual(stored("en-US"));
+      expect(localizeDefaultMemoTemplate(stored("ja"), "fr-FR")).toEqual(stored("fr"));
     });
 
     test("keeps templates the user edited or created as they are", () => {

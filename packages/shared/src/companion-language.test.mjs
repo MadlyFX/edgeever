@@ -1,9 +1,13 @@
 import { describe, expect, test } from "bun:test";
+import { de } from "./i18n/de.ts";
 import { enUS } from "./i18n/en-US.ts";
+import { es } from "./i18n/es.ts";
+import { fr } from "./i18n/fr.ts";
 import { ja } from "./i18n/ja.ts";
 import { pl } from "./i18n/pl.ts";
 import { ru } from "./i18n/ru.ts";
 import { zhCN } from "./i18n/zh-CN.ts";
+import { zhTW } from "./i18n/zh-TW.ts";
 import { CompanionTurnInputSchema, companionTurnLocale, conversationLanguage, translationTargetInstruction } from "./companion.ts";
 
 const locale = (message, recent, fallback) => conversationLanguage(message, recent, fallback);
@@ -47,21 +51,23 @@ describe("companion conversation language", () => {
   test("recognizes Russian requests and names every interface language", () => {
     expect(locale("Сделай краткое содержание заметки", [], "en-US")).toEqual({ locale: "ru", source: "current request" });
     expect(locale("12345", [], "ru")).toEqual({ locale: "ru", source: "interface" });
-    for (const [code, name] of [["zh-CN", "Simplified Chinese"], ["en-US", "English"], ["ja", "Japanese"], ["pl", "Polish"], ["ru", "Russian"]]) {
+    for (const [code, name] of [["zh-CN", "Simplified Chinese"], ["zh-TW", "Traditional Chinese"], ["en-US", "English"], ["ja", "Japanese"], ["pl", "Polish"], ["ru", "Russian"], ["es", "Spanish"], ["de", "German"], ["fr", "French"]]) {
       expect(translationTargetInstruction({ locale: code, source: "interface" })).toContain(`translate into ${name}`);
     }
   });
 
   test("maps any UI locale to a companion turn locale", () => {
     expect(companionTurnLocale("ru-RU")).toBe("ru");
-    expect(companionTurnLocale("zh-TW")).toBe("zh-CN");
-    expect(companionTurnLocale("de-DE")).toBe("en-US");
+    expect(companionTurnLocale("zh-TW")).toBe("zh-TW");
+    expect(companionTurnLocale("de-DE")).toBe("de");
+    expect(companionTurnLocale("fr-FR")).toBe("fr");
+    expect(companionTurnLocale("it-IT")).toBe("en-US");
     expect(companionTurnLocale(null)).toBe("en-US");
     expect(CompanionTurnInputSchema.shape.locale.parse("ru")).toBe("ru");
   });
 
   test("generated translation actions in every interface language are not conversation evidence", () => {
-    for (const catalog of [zhCN, enUS, ja, pl, ru]) {
+    for (const catalog of [zhCN, zhTW, enUS, ja, pl, ru, es, de, fr]) {
       const { selection, skillPrompts } = catalog.aiAssistant.sidebar;
       const prompts = [
         skillPrompts.translate,

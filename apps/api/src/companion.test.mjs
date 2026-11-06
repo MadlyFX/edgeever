@@ -436,9 +436,10 @@ describe("companion client-direct HTTP contracts", () => {
     expect(await replyLanguage("?locale=ru")).toBe("Russian");
     expect(await replyLanguage("?locale=zh-CN")).toBe("Simplified Chinese");
     expect(await replyLanguage("?locale=en-US")).toBe("English");
+    expect(await replyLanguage("?locale=de")).toBe("German");
     // A missing or unknown locale keeps the previous English default.
     expect(await replyLanguage("")).toBe("English");
-    expect(await replyLanguage("?locale=de")).toBe("English");
+    expect(await replyLanguage("?locale=it")).toBe("English");
   });
 
   test("prepare returns model credentials and does not invoke the proxy stream", async () => {

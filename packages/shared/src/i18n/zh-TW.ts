@@ -3287,6 +3287,13 @@ export const zhTW = {
     },
   },
   editorToolbar: {
+    colors: "文字與醒目提示顏色",
+    textColor: "文字顏色",
+    highlightColor: "醒目提示顏色",
+    defaultColor: "預設文字顏色",
+    noHighlight: "無醒目提示",
+    resetColors: "重設文字與醒目提示顏色",
+    colorNames: { gray: "灰色", brown: "棕色", orange: "橘色", yellow: "黃色", green: "綠色", blue: "藍色", purple: "紫色", pink: "粉紅色", red: "紅色" },
     toolbar: "編輯器工具欄",
     showMore: "顯示更多編輯工具",
     showLess: "收起編輯器工具欄",

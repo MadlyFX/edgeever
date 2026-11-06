@@ -55,7 +55,7 @@ describe("web locale resolution", () => {
   });
 
   test("falls unmatched browser languages back to English instead of Chinese", () => {
-    setNavigatorLanguages(["fr-FR", "it-IT"]);
+    setNavigatorLanguages(["it-IT", "ko-KR"]);
     expect(getBrowserLocale()).toBe("en-US");
     setNavigatorLanguages(["ko-KR"]);
     expect(getInitialLocale()).toBe("en-US");
@@ -66,6 +66,6 @@ describe("web locale resolution", () => {
     setNavigatorLanguages(["ja-JP", "zh-CN"]);
     expect(getBrowserLocale()).toBe("ja");
     setNavigatorLanguages(["fr-FR", "zh-CN"]);
-    expect(getBrowserLocale()).toBe("zh-CN");
+    expect(getBrowserLocale()).toBe("fr");
   });
 });

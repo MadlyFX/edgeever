@@ -100,7 +100,7 @@ describe("workspace provisioning", () => {
       db,
       "ws_fr",
       "2026-08-14T00:00:00.000Z",
-      "fr-FR,fr;q=0.9",
+      "it-IT,it;q=0.9",
     );
 
     expect(calls[0].values).toContain("Quick Spark");
