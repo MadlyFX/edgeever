@@ -3473,6 +3473,13 @@ export const fr = {
     }
   },
   editorToolbar: {
+    colors: "Couleurs du texte et du surlignage",
+    textColor: "Couleur du texte",
+    highlightColor: "Couleur de surlignage",
+    defaultColor: "Couleur de texte par défaut",
+    noHighlight: "Sans surlignage",
+    resetColors: "Réinitialiser les couleurs du texte et du surlignage",
+    colorNames: { gray: "Gris", brown: "Marron", orange: "Orange", yellow: "Jaune", green: "Vert", blue: "Bleu", purple: "Violet", pink: "Rose", red: "Rouge" },
     toolbar: "Barre d'outils de l'éditeur",
     showMore: "Afficher plus d'outils d'édition",
     showLess: "Réduire la barre d'outils de l'éditeur",

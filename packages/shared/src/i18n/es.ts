@@ -3473,6 +3473,13 @@ export const es = {
     }
   },
   "editorToolbar": {
+    "colors": "Colores de texto y resaltado",
+    "textColor": "Color del texto",
+    "highlightColor": "Color de resaltado",
+    "defaultColor": "Color de texto predeterminado",
+    "noHighlight": "Sin resaltado",
+    "resetColors": "Restablecer colores de texto y resaltado",
+    "colorNames": { "gray": "Gris", "brown": "Marrón", "orange": "Naranja", "yellow": "Amarillo", "green": "Verde", "blue": "Azul", "purple": "Morado", "pink": "Rosa", "red": "Rojo" },
     "toolbar": "Barra de herramientas del editor",
     "showMore": "Mostrar más herramientas de edición",
     "showLess": "Contraer barra de herramientas del editor",

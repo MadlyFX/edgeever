@@ -3473,6 +3473,13 @@ export const de = {
     }
   },
   "editorToolbar": {
+    "colors": "Text- und Hervorhebungsfarben",
+    "textColor": "Textfarbe",
+    "highlightColor": "Hervorhebungsfarbe",
+    "defaultColor": "Standardtextfarbe",
+    "noHighlight": "Keine Hervorhebung",
+    "resetColors": "Text- und Hervorhebungsfarben zurücksetzen",
+    "colorNames": { "gray": "Grau", "brown": "Braun", "orange": "Orange", "yellow": "Gelb", "green": "Grün", "blue": "Blau", "purple": "Violett", "pink": "Rosa", "red": "Rot" },
     "toolbar": "Editor-Symbolleiste",
     "showMore": "Weitere Bearbeitungswerkzeuge anzeigen",
     "showLess": "Editor-Symbolleiste einklappen",
