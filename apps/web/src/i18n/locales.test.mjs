@@ -55,7 +55,7 @@ describe("web locale resolution", () => {
   });
 
   test("falls unmatched browser languages back to English instead of Chinese", () => {
-    setNavigatorLanguages(["it-IT", "ko-KR"]);
+    setNavigatorLanguages(["pt-BR", "it-IT"]);
     expect(getBrowserLocale()).toBe("en-US");
     setNavigatorLanguages(["ko-KR"]);
     expect(getInitialLocale()).toBe("en-US");

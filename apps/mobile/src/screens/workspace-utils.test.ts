@@ -70,7 +70,7 @@ describe("mobile workspace utilities", () => {
     expect(isEnglishMobileLocale("en-US")).toBe(true);
   });
 
-  test("resolves Japanese, Polish, and French system languages and unmatched languages to English", () => {
+  test("resolves supported system languages and falls back to English for unmatched languages", () => {
     const original = Intl.DateTimeFormat.prototype.resolvedOptions;
     const withLocale = (locale: string) => {
       Intl.DateTimeFormat.prototype.resolvedOptions = function resolvedOptions() {

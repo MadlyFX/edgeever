@@ -98,7 +98,7 @@ describe("workspace provisioning", () => {
 
     createWorkspaceDefaultSeedStatements(
       db,
-      "ws_fr",
+      "ws_it",
       "2026-08-14T00:00:00.000Z",
       "it-IT,it;q=0.9",
     );
