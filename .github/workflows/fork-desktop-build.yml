@@ -1,0 +1,138 @@
+name: Build fork desktop
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+  workflow_run:
+    workflows: [Update deployed EdgeEver]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    if: >-
+      github.repository == 'MadlyFX/edgeever' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    name: Validate customized fork on Ubuntu
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run test
+      - run: bun run typecheck
+      - run: bun run typecheck:mobile
+      - run: bun run build:web
+        env:
+          NODE_OPTIONS: --experimental-strip-types
+
+  windows:
+    if: >-
+      github.event.repository.fork &&
+      github.repository == 'MadlyFX/edgeever' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    name: Windows x64 installer
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      EDGE_EVER_DESKTOP_BUILD: '1'
+      EDGE_EVER_DESKTOP_ARCH: x64
+      EDGE_EVER_DESKTOP_TARGET: win
+      EDGE_EVER_DESKTOP_FORK_BUILD: '1'
+      NODE_OPTIONS: --experimental-strip-types
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The updater commits after its own run starts. Build the new main tip.
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: oven-sh/setup-bun@v2
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/cache@v5
+        with:
+          path: |
+            ~\.cargo\registry
+            ~\.cargo\git
+            crates\desktop-sidecar\target
+          key: fork-windows-x64-rust-${{ hashFiles('crates/desktop-sidecar/Cargo.lock', 'crates/desktop-sidecar/**/*.rs') }}
+          restore-keys: fork-windows-x64-rust-
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Check types
+        run: bun run typecheck
+      - name: Test branding and fork update policy
+        run: bun test apps/web/src/lib/branding.test.mjs apps/desktop/src/main/desktop-update-policy.test.mjs
+      - name: Build renderer
+        run: bun run build:web
+      - name: Build native sidecar
+        run: cargo build --manifest-path crates/desktop-sidecar/Cargo.toml --release
+      - name: Package installer
+        run: bun scripts/run-desktop-builder.mjs --publish never
+      - name: Verify package
+        env:
+          EDGE_EVER_VERIFY_TARGET: win32
+        run: bun scripts/verify-desktop-package.mjs
+      - name: Verify fork update isolation
+        run: bun scripts/verify-fork-desktop.mjs
+      - name: Verify packaged startup
+        run: bun run verify:packaged-desktop-startup -- release/desktop/win-unpacked/EdgeEver.exe
+      - name: Verify upgrade from official desktop
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $previousDirectory = Join-Path $env:RUNNER_TEMP 'edgeever-previous-windows'
+          New-Item -ItemType Directory -Force -Path $previousDirectory | Out-Null
+          gh release download --repo tianma-if/edgeever --pattern 'EdgeEver-*-windows-x64.exe' --dir $previousDirectory
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $previousInstaller = Get-ChildItem -LiteralPath $previousDirectory -Filter '*.exe' | Select-Object -First 1
+          if (-not $previousInstaller) { throw 'Previous installer was not downloaded' }
+          $installer = Start-Process -FilePath $previousInstaller.FullName -ArgumentList '/S' -WindowStyle Hidden -Wait -PassThru
+          if ($installer.ExitCode -ne 0) { throw "Previous installer failed: $($installer.ExitCode)" }
+          Get-Process -Name EdgeEver -ErrorAction SilentlyContinue | Stop-Process -Force
+          $previousExecutable = Get-ChildItem -LiteralPath (Join-Path $env:LOCALAPPDATA 'Programs') -Filter 'EdgeEver.exe' -File -Recurse | Select-Object -First 1
+          if (-not $previousExecutable) { throw 'Previous installed executable was not found' }
+          bun run verify:desktop-cross-version-startup -- $previousExecutable.FullName (Resolve-Path 'release/desktop/win-unpacked/EdgeEver.exe').Path
+      - name: Record source and checksums
+        shell: pwsh
+        run: |
+          $sourceCommit = git rev-parse HEAD
+          "Source commit: $sourceCommit" | Set-Content release/desktop/BUILD.txt
+          Get-ChildItem release/desktop -Filter '*-windows-x64.exe' | ForEach-Object {
+            $digest = (Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLowerInvariant()
+            "$digest  $($_.Name)"
+          } | Set-Content release/desktop/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v6
+        with:
+          name: edgeever-fork-windows-x64-${{ github.run_number }}
+          path: |
+            release/desktop/*-windows-x64.exe
+            release/desktop/SHA256SUMS.txt
+            release/desktop/BUILD.txt
+          if-no-files-found: error
+          retention-days: 30

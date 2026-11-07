@@ -1204,6 +1204,20 @@ export const es = {
       "readingElements": "Diseño y extensiones",
       "editing": "Edición"
     },
+    branding: {
+      title: "Identidad visual",
+      description: "Personaliza la aplicación en este dispositivo. Los cambios se aplican al guardar.",
+      name: "Nombre de la aplicación",
+      color: "Color de acento",
+      logo: "URL del logotipo",
+      upload: "Subir logotipo (hasta 256 KB)",
+      removeLogo: "Quitar logotipo",
+      reset: "Restablecer identidad visual",
+      saved: "Identidad visual guardada.",
+      invalidLogo: "Usa una URL HTTPS, una ruta local o una imagen PNG, JPEG o WebP subida.",
+      fileError: "Elige una imagen PNG, JPEG o WebP de hasta 256 KB.",
+      saveError: "No se pudo guardar. Comprueba que el almacenamiento del navegador esté disponible.",
+    },
     "languageTitle": "Idioma de la interfaz",
     "systemLanguage": "Seguir el sistema",
     "picgo": {

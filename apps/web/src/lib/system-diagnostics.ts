@@ -7,6 +7,7 @@ export type ClientRuntimeDiagnostics = {
   appVersion: string | null;
   architecture: string | null;
   autoUpdateSupported: boolean | null;
+  updateDownloadUrl?: string;
   deviceModel: string | null;
   engine: string | null;
   operatingSystem: string | null;
@@ -92,6 +93,7 @@ export const getClientRuntimeDiagnostics = async (): Promise<ClientRuntimeDiagno
       appVersion: info.appVersion,
       architecture: info.architecture === "unknown" ? null : info.architecture,
       autoUpdateSupported: info.autoUpdateSupported,
+      updateDownloadUrl: info.updateDownloadUrl,
       deviceModel: info.deviceModel === "unknown" ? null : info.deviceModel,
       engine: [
         info.electron === "unknown" ? null : `Electron ${info.electron}`,

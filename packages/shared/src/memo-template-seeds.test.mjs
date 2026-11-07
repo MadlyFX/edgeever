@@ -41,6 +41,7 @@ describe("memo template seeds", () => {
       expect(localizeDefaultMemoTemplate(stored("zh-CN"), "pl-PL")).toEqual(stored("pl"));
       expect(localizeDefaultMemoTemplate(stored("pl"), "ja")).toEqual(stored("ja"));
       expect(localizeDefaultMemoTemplate(stored("ja"), "fr-FR")).toEqual(stored("fr"));
+      expect(localizeDefaultMemoTemplate(stored("ja"), "it-IT")).toEqual(stored("en-US"));
     });
 
     test("keeps templates the user edited or created as they are", () => {

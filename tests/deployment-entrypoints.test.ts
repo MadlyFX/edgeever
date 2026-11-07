@@ -520,7 +520,7 @@ describe("Cloudflare deployment entrypoints", () => {
       for (const [index, match] of jobStarts.entries()) {
         const nextJob = jobStarts[index + 1];
         const job = jobs.slice(match.index, nextJob?.index);
-        const owner = file === "personal-editor-validation.yml" ? "MadlyFX/edgeever" : "tianma-if/edgeever";
+        const owner = ["personal-editor-validation.yml", "fork-desktop-build.yml"].includes(file) ? "MadlyFX/edgeever" : "tianma-if/edgeever";
         expect(job).toContain(`github.repository == '${owner}'`);
       }
     }

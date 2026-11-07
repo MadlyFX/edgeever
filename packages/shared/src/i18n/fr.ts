@@ -1204,6 +1204,20 @@ export const fr = {
       readingElements: "Mise en page et extensions",
       editing: "Édition"
     },
+    branding: {
+      title: "Identité visuelle",
+      description: "Personnalisez cette application sur cet appareil. Les modifications sont appliquées après enregistrement.",
+      name: "Nom de l’application",
+      color: "Couleur d’accent",
+      logo: "URL du logo",
+      upload: "Importer un logo (256 Ko maximum)",
+      removeLogo: "Supprimer le logo",
+      reset: "Réinitialiser l’identité visuelle",
+      saved: "Identité visuelle enregistrée.",
+      invalidLogo: "Utilisez une URL HTTPS, un chemin local ou une image PNG, JPEG ou WebP importée.",
+      fileError: "Choisissez une image PNG, JPEG ou WebP de 256 Ko maximum.",
+      saveError: "Enregistrement impossible. Vérifiez que le stockage du navigateur est disponible.",
+    },
     languageTitle: "Langue de l'interface",
     systemLanguage: "Suivre le système",
     picgo: {

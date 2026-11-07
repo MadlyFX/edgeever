@@ -44,7 +44,7 @@ const builderArgs = [
   "run",
   "--cwd",
   "apps/desktop",
-  "dist",
+  environment.EDGE_EVER_DESKTOP_FORK_BUILD === "1" ? "dist:fork" : "dist",
   "--",
   "--publish",
   publishMode,

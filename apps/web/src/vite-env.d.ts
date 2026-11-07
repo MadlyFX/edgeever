@@ -100,6 +100,7 @@ interface EdgeEverDesktopBridge {
   systemInfo(): Promise<{
     appVersion: string;
     autoUpdateSupported: boolean;
+    updateDownloadUrl?: string;
     platform: string;
     architecture: string;
     deviceModel: string;

@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "bun:test";
+import { shouldConfigureDesktopUpdates } from "./desktop-update-policy.mjs";
 
 const mainSource = readFileSync(new URL("./index.mjs", import.meta.url), "utf8");
 const controllerSource = readFileSync(new URL("./desktop-update-controller.mjs", import.meta.url), "utf8");
@@ -11,7 +12,9 @@ const notebookPaneSource = readFileSync(new URL("../../../web/src/components/Not
 describe("desktop update flow", () => {
   test("enables automatic updates for packaged Linux AppImages", () => {
     expect(mainSource).not.toContain('process.platform === "linux" || !app.isPackaged');
-    expect(mainSource).toContain('autoUpdateSupported: true');
+    expect(mainSource).toContain('autoUpdateSupported: desktopPackageMetadata.edgeeverUpdatePolicy !== "manual"');
+    expect(shouldConfigureDesktopUpdates({ packaged: true })).toBe(true);
+    expect(shouldConfigureDesktopUpdates({ packaged: true, updatePolicy: "manual" })).toBe(false);
     expect(mainSource).toContain('process.env.GITHUB_ACTIONS === "true"');
     expect(mainSource).toContain("Linux update verification requires a loopback HTTP feed");
     expect(systemInfoSource).toContain("desktopAutoUpdateSupported");

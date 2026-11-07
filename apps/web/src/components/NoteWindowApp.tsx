@@ -16,6 +16,7 @@ import { EdgeEverPluginHost } from "@/lib/plugins/plugin-host";
 import { createRepository } from "@/lib/repository";
 import { cacheMemoDetail, memoDetailQueryKey, memoToSummary } from "@/lib/workspace-memo-cache";
 import { useNoteProse } from "@/hooks/useNoteProse";
+import { useBranding } from "@/lib/branding";
 
 const noop = () => undefined;
 
@@ -28,6 +29,7 @@ const noop = () => undefined;
  */
 export const NoteWindowApp = ({ memoId }: { memoId: string }) => {
   const { t } = useTranslation();
+  const branding = useBranding();
   const queryClient = useQueryClient();
   const bridge = window.edgeeverDesktop;
   const sessionQuery = useQuery({
@@ -107,8 +109,8 @@ export const NoteWindowApp = ({ memoId }: { memoId: string }) => {
   }), [bridge, memoId, queryClient]);
 
   useEffect(() => {
-    document.title = memo ? `${getMemoDisplayTitle(memo.title, t("common.untitledMemo"))} · EdgeEver` : "EdgeEver";
-  }, [memo, t]);
+    document.title = memo ? `${getMemoDisplayTitle(memo.title, t("common.untitledMemo"))} · ${branding.name}` : branding.name;
+  }, [memo, t, branding.name]);
 
   const registerPendingSave = useCallback((save: (() => Promise<boolean>) | null) => {
     pendingSaveRef.current = save;

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, HashRouter } from "react-router";
 import { registerSW } from "virtual:pwa-register";
+import { installBrandingPreferences } from "./lib/branding";
 import { App } from "./app/App";
 import { bootstrapI18n } from "./i18n";
 import { emitPwaUpdateNotice } from "./lib/pwa-update-notice";
@@ -122,6 +123,7 @@ const mountApp = () => {
   }
 
   initializeTheme();
+  installBrandingPreferences();
   installDesktopClipboardBridge();
   installEditorBodyFontFaces();
   applyEditorBodyFontPreference();
