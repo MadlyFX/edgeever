@@ -1204,6 +1204,20 @@ export const de = {
       "readingElements": "Layout & Erweiterungen",
       "editing": "Bearbeitung"
     },
+    branding: {
+      title: "Branding",
+      description: "Passe die App auf diesem Gerät an. Änderungen werden beim Speichern übernommen.",
+      name: "App-Name",
+      color: "Akzentfarbe",
+      logo: "Logo-URL",
+      upload: "Logo hochladen (bis 256 KB)",
+      removeLogo: "Logo entfernen",
+      reset: "Branding zurücksetzen",
+      saved: "Branding gespeichert.",
+      invalidLogo: "Verwende eine HTTPS-Bild-URL, einen lokalen Pfad oder ein hochgeladenes PNG, JPEG oder WebP.",
+      fileError: "Wähle ein PNG-, JPEG- oder WebP-Bild bis 256 KB.",
+      saveError: "Speichern fehlgeschlagen. Prüfe, ob der Browserspeicher verfügbar ist.",
+    },
     "languageTitle": "Sprache der Benutzeroberfläche",
     "systemLanguage": "Systemstandard",
     "picgo": {

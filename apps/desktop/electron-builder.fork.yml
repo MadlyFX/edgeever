@@ -1,0 +1,5 @@
+extends: ./electron-builder.yml
+# Fork artifacts are installed manually. No official update feed is bundled.
+publish: null
+extraMetadata:
+  edgeeverUpdatePolicy: manual

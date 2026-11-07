@@ -1,5 +1,5 @@
 import { app, autoUpdater as nativeAutoUpdater, Notification, BrowserWindow, Menu, Tray, globalShortcut, nativeImage, ipcMain, session, net, protocol, shell, dialog, safeStorage, clipboard, ClipboardItem, powerMonitor, desktopCapturer, screen, utilityProcess } from "electron";
-import { createReadStream, existsSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync } from "node:fs";
 import { appendFile, mkdir, open, readdir, readFile, rename, stat, unlink, writeFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { Readable } from "node:stream";
@@ -63,6 +63,7 @@ import {
   verifyDownloadedWindowsUpdate,
 } from "./windows-update-trust.mjs";
 import electronUpdater from "electron-updater";
+import { shouldConfigureDesktopUpdates } from "./desktop-update-policy.mjs";
 import { createDesktopUpdateController } from "./desktop-update-controller.mjs";
 import { createUpdateDiagnostic } from "./update-diagnostics.mjs";
 import { createUpdateNetworkDiagnostics } from "./update-network-diagnostics.mjs";
@@ -388,9 +389,14 @@ const desktopDeviceModel = () => {
   return cachedDesktopDeviceModel;
 };
 
+const desktopPackageMetadata = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
+
 const desktopRuntimeSystemInfo = () => ({
   appVersion: app.getVersion(),
-  autoUpdateSupported: true,
+  autoUpdateSupported: desktopPackageMetadata.edgeeverUpdatePolicy !== "manual",
+  updateDownloadUrl: desktopPackageMetadata.edgeeverUpdatePolicy === "manual"
+    ? "https://github.com/MadlyFX/edgeever/actions/workflows/fork-desktop-build.yml"
+    : "https://github.com/tianma-if/edgeever/releases/latest",
   platform: process.platform,
   architecture: process.arch,
   deviceModel: desktopDeviceModel(),
@@ -1185,7 +1191,7 @@ const checkForDesktopUpdate = (reason, { force = false, throwOnError = false } =
 };
 
 const configureAutoUpdater = () => {
-  if (!app.isPackaged || process.env.EDGE_EVER_DISABLE_AUTO_UPDATE === "1") return;
+  if (!shouldConfigureDesktopUpdates({ packaged: app.isPackaged, disabled: process.env.EDGE_EVER_DISABLE_AUTO_UPDATE, updatePolicy: desktopPackageMetadata.edgeeverUpdatePolicy })) return;
   // Observe the exact session used by electron-updater, plus net.fetch metadata.
   // No setProxy, request headers, bodies, credentials or response bodies are collected.
   for (const [name, getSession] of [

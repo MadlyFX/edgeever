@@ -1,3 +1,5 @@
+import { BrandIdentity } from "./BrandIdentity";
+import { brandForeground, useBranding } from "@/lib/branding";
 import { lazy, Suspense, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -612,6 +614,7 @@ export const NotebookPane = ({
   collapseShortcutLabel?: string;
 }) => {
   const { t } = useTranslation();
+  const branding = useBranding();
   const showDescendantNotes = useShowDescendantNotesPreference();
   const { unseen: deployedUpdateUnseen } = useDeployedUpdateNotice();
   // Temporarily keep template actions out of the primary workspace navigation.
@@ -756,6 +759,7 @@ export const NotebookPane = ({
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden" data-notebook-sidebar-collapsed={collapsed ? "true" : "false"}>
       <div className={cn("flex min-h-0 flex-1 flex-col", collapsed && "hidden")}>
+      <BrandIdentity />
       <header className="flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-end justify-between border-b border-slate-200 px-4 pb-3 pt-[env(safe-area-inset-top)] lg:hidden">
         <div>
           <div className="text-base font-semibold tracking-normal">{t("notebookPane.notebooks")}</div>
@@ -808,7 +812,7 @@ export const NotebookPane = ({
             onClick={() => onCreateMemo()}
             disabled={!canCreateMemo || isCreatingMemo}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white shadow-[0_5px_12px_rgb(var(--brand-green-rgb)/0.22)] transition-transform duration-150 group-hover:scale-[1.03] group-focus-visible:ring-2 group-focus-visible:ring-slate-900/20 group-focus-visible:ring-offset-2">
+            <span style={{ backgroundColor: branding.color, color: brandForeground(branding.color) }} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white shadow-[0_5px_12px_rgb(var(--brand-green-rgb)/0.22)] transition-transform duration-150 group-hover:scale-[1.03] group-focus-visible:ring-2 group-focus-visible:ring-slate-900/20 group-focus-visible:ring-offset-2">
               <Plus className="h-5 w-5" />
             </span>
             <span className="whitespace-nowrap text-sm font-semibold text-slate-950">{t("notebookPane.newMemo")}</span>

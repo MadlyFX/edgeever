@@ -569,7 +569,7 @@ export const SystemInfoPanel = ({ active = true }: { active?: boolean }) => {
                   variant="outline"
                   className="h-7 bg-card px-2.5 text-xs shadow-xs hover:bg-slate-50"
                 >
-                  <a href="https://github.com/tianma-if/edgeever/releases/latest" target="_blank" rel="noreferrer">
+                  <a href={clientRuntimeQuery.data?.updateDownloadUrl || "https://github.com/tianma-if/edgeever/releases/latest"} target="_blank" rel="noreferrer">
                     <ExternalLink className="h-3.5 w-3.5" />
                     {t("systemInfo.desktopDownloadLatest")}
                   </a>

@@ -19,6 +19,7 @@ import { classifyLoginError, getLoginProblemMessageKey } from "@/lib/login-error
 import { EVERNOTE_MIGRATION_PATH } from "@/lib/routes";
 import { syncPublishedNoteBodyFont } from "@/lib/published-note-body-font";
 import { getNoteWindowMemoId } from "@/lib/desktop-note-windows";
+import { useBranding } from "@/lib/branding";
 import { ApiRequestError, getMfaChallenge } from "@edgeever/client";
 import type { AuthSession, MfaChallenge } from "@edgeever/shared";
 import { twoFactorErrorKey } from "@/components/two-factor/TwoFactorSteps";
@@ -35,14 +36,17 @@ const PublicTableFormPage = lazy(() => import("@/components/PublicTableFormPage"
 const NoteWindowApp = lazy(() => import("@/components/NoteWindowApp").then((module) => ({ default: module.NoteWindowApp })));
 const NotebookSiteManagementPage = lazy(() => import("@/components/NotebookSiteManagementPage").then((module) => ({ default: module.NotebookSiteManagementPage })));
 
-const AuthLoadingScreen = ({ title = "EdgeEver", detail }: { title?: string; detail?: string }) => (
+const AuthLoadingScreen = ({ title, detail }: { title?: string; detail?: string }) => {
+  const branding = useBranding();
+  return (
   <div className="flex h-[100dvh] items-center justify-center bg-slate-50 px-6 text-center text-slate-700">
     <div role="status" aria-live="polite">
-      <div className="text-sm font-semibold">{title}</div>
+      <div className="text-sm font-semibold">{title ?? branding.name}</div>
       {detail && <div className="mt-2 text-xs text-slate-500">{detail}</div>}
     </div>
   </div>
-);
+  );
+};
 
 const EvernoteMigrationRoute = () => {
   const navigate = useNavigate();

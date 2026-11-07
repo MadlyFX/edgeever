@@ -80,6 +80,7 @@ import { syncPublishedNoteBodyFont } from "@/lib/published-note-body-font";
 import { useShowDescendantNotesPreference, writeShowDescendantNotesPreference } from "@/lib/descendant-notes-preference";
 import { LoginItemSettingsItem } from "./LoginItemSettingsItem";
 import { PicGoSettingsItem } from "./PicGoSettingsItem";
+import { BrandingPreferences } from "./BrandingPreferences";
 import { NoteProseCssEditor } from "./NoteProseCssEditor";
 import { NoteProseCssPreview } from "./NoteProseCssPreview";
 
@@ -365,6 +366,7 @@ export const PreferenceCard = ({
       {section === "general" ? (
         <PreferenceSection title={t("settings.groups.interface")}>
           <LoginItemSettingsItem />
+          <BrandingPreferences />
           <div className="flex min-h-16 flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <div className="flex min-w-0 items-center gap-3">
               <Languages className="h-4 w-4 shrink-0 text-slate-500" />

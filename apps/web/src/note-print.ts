@@ -18,9 +18,10 @@ import githubHighlightStyles from "highlight.js/styles/github.css?inline";
 import printStyles from "@/styles/note-print.css?inline";
 import "@fontsource-variable/noto-sans-sc/wght.css";
 import "@/styles/note-print-screen.css";
+import { getBranding } from "@/lib/branding";
 
 const PRINT_FONT_FAMILY = '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans SC Variable", sans-serif';
-let printTitle = "EdgeEver";
+let printTitle = getBranding().name;
 let printPreparingLabel = "";
 let printReadyLabel = "";
 const toolbar = document.getElementById("print-toolbar");
@@ -123,7 +124,7 @@ const renderPreview = async (payload: NotePrintPayload) => {
   printPreparingLabel = payload.labels.preparing;
   printReadyLabel = payload.labels.ready;
   document.documentElement.lang = payload.language;
-  document.title = withEnvironmentTitlePrefix(`${payload.title} · EdgeEver`, {
+  document.title = withEnvironmentTitlePrefix(`${payload.title} · ${getBranding().name}`, {
     development: import.meta.env.DEV,
     profile: __EDGEEVER_DEVELOPMENT_PROFILE__,
   });
@@ -166,7 +167,7 @@ printButton?.addEventListener("click", () => {
   if (!preview || !printButton || printButton.disabled) return;
   printButton.disabled = true;
   setText(status, printPreparingLabel);
-  void downloadNotePrintPdf(preview, printTitle, "EdgeEver").then(() => {
+  void downloadNotePrintPdf(preview, printTitle, getBranding().name).then(() => {
     setText(status, printReadyLabel);
     printButton.disabled = false;
   }).catch((error) => {
