@@ -63,7 +63,7 @@ export const brandForeground = (hex: string): string => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.179 ? "#000000" : "#FFFFFF";
 };
 
-export const withAppBrandName = (text: string, name = getBranding().name) => text.replaceAll("EdgeEver", name);
+export const withAppBrandName = (text: string, name = getBranding().name) => text.replaceAll("EdgeEver", () => name);
 
 export const replaceBrandTitle = (title: string, previousName: string, nextName: string): string => {
   if (title === previousName) return nextName;

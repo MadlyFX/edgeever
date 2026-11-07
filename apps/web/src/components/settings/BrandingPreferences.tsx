@@ -13,6 +13,7 @@ export const BrandingPreferences = () => {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   const [failedLogo, setFailedLogo] = useState("");
+  useEffect(() => setFailedLogo(""), [draft.logoUrl]);
   useEffect(() => { setDraft(branding); }, [branding]);
   const preview = resolveBranding(draft);
   const edit = (patch: Partial<typeof draft>) => {

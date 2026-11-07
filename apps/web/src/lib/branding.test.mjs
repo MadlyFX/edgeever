@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { BRANDING_STORAGE_KEY, DEFAULT_BRANDING, brandForeground, getBranding, installBrandingPreferences, normalizeBrandLogoUrl, replaceBrandTitle, resolveBranding, writeBranding } from "./branding.ts";
+import { BRANDING_STORAGE_KEY, DEFAULT_BRANDING, brandForeground, getBranding, installBrandingPreferences, normalizeBrandLogoUrl, replaceBrandTitle, resolveBranding, withAppBrandName, writeBranding } from "./branding.ts";
 
 const originalWindow = globalThis.window;
 const originalDocument = globalThis.document;
@@ -67,5 +67,8 @@ describe("personal branding", () => {
     expect(brandForeground("#777777")).toBe("#000000");
     expect(brandForeground("#747474")).toBe("#FFFFFF");
     expect(brandForeground("#000000")).toBe("#FFFFFF");
+  });
+  test("names with replacement characters are displayed literally", () => {
+    expect(withAppBrandName("Welcome to EdgeEver", "$& Notes")).toBe("Welcome to $& Notes");
   });
 });
