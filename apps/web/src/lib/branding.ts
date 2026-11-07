@@ -60,7 +60,7 @@ export const brandForeground = (hex: string): string => {
     const channel = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
     return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
   });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.18 ? "#07130B" : "#FFFFFF";
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.179 ? "#000000" : "#FFFFFF";
 };
 
 export const withAppBrandName = (text: string, name = getBranding().name) => text.replaceAll("EdgeEver", name);

@@ -25,7 +25,7 @@ export const BrandingPreferences = () => {
       return;
     }
     try { writeBranding(draft); setSaved(true); setError(""); }
-    catch { setError(t("settings.branding.saveError", { defaultValue: "Could not save branding on this device. Check that browser storage is available." })); }
+    catch { setSaved(false); setError(t("settings.branding.saveError", { defaultValue: "Could not save branding on this device. Check that browser storage is available." })); }
   };
   const upload = async (file?: File) => {
     if (!file) return;
@@ -73,7 +73,7 @@ export const BrandingPreferences = () => {
       <Button type="submit" size="sm">{t("common.save")}</Button>
       <Button type="button" variant="outline" size="sm" onClick={() => {
         try { writeBranding(DEFAULT_BRANDING); setSaved(true); setError(""); }
-        catch { setError(t("settings.branding.saveError", { defaultValue: "Could not save branding on this device. Check that browser storage is available." })); }
+        catch { setSaved(false); setError(t("settings.branding.saveError", { defaultValue: "Could not save branding on this device. Check that browser storage is available." })); }
       }}>{t("settings.branding.reset", { defaultValue: "Reset branding" })}</Button>
     </div>
   </form>;

@@ -39,12 +39,12 @@ const NotebookSiteManagementPage = lazy(() => import("@/components/NotebookSiteM
 const AuthLoadingScreen = ({ title, detail }: { title?: string; detail?: string }) => {
   const branding = useBranding();
   return (
-  <div className="flex h-[100dvh] items-center justify-center bg-slate-50 px-6 text-center text-slate-700">
-    <div role="status" aria-live="polite">
-      <div className="text-sm font-semibold">{title ?? branding.name}</div>
-      {detail && <div className="mt-2 text-xs text-slate-500">{detail}</div>}
+    <div className="flex h-[100dvh] items-center justify-center bg-slate-50 px-6 text-center text-slate-700">
+      <div role="status" aria-live="polite">
+        <div className="text-sm font-semibold">{title ?? branding.name}</div>
+        {detail && <div className="mt-2 text-xs text-slate-500">{detail}</div>}
+      </div>
     </div>
-  </div>
   );
 };
 

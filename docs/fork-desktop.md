@@ -1,7 +1,8 @@
 # Desktop builds for this fork
 
 Open **Actions → Build fork desktop → Run workflow** in `MadlyFX/edgeever`.
-Select the branch to build. Changes pushed to `main` also build automatically;
+Select the branch to build. Pull requests from branches in this repository and
+changes pushed to `main` also build automatically;
 the upstream updater's completed workflow triggers a build of the new `main`
 tip, including when its bot push cannot trigger another push workflow.
 

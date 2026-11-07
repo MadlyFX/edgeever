@@ -63,7 +63,9 @@ describe("personal branding", () => {
     cleanup();
   });
   test("accent button text remains readable on light and dark colors", () => {
-    expect(brandForeground("#ffffff")).toBe("#07130B");
+    expect(brandForeground("#ffffff")).toBe("#000000");
+    expect(brandForeground("#777777")).toBe("#000000");
+    expect(brandForeground("#747474")).toBe("#FFFFFF");
     expect(brandForeground("#000000")).toBe("#FFFFFF");
   });
 });
